@@ -7,8 +7,6 @@ import Button from "../Button/Button";
 
 const Navbar = () => {
   const router = useRouter();
-  const nav_links = `text-gray-700 text-sm font-semibold transition-all duration-300 hover:text-red-500`;
-  const nav_active = `text-red-500`;
 
   const menuData = [
     {
@@ -16,34 +14,28 @@ const Navbar = () => {
       url: "/",
       name: "Home",
       className:
-        router.pathname == "/" ? `${nav_links} ${nav_active}` : `${nav_links}`,
+        router.pathname == "/" ? `nav-links active_links` : `nav-links`,
     },
     {
       id: 2,
       url: "/music",
       name: "Music",
       className:
-        router.pathname == "/music"
-          ? `${nav_links} ${nav_active}`
-          : `${nav_links}`,
+        router.pathname == "/music" ? `nav-links active_links` : `nav-links`,
     },
     {
       id: 13,
       url: "/premium",
       name: "Premium",
       className:
-        router.pathname == "/premium"
-          ? `${nav_links} ${nav_active}`
-          : `${nav_links}`,
+        router.pathname == "/premium" ? `nav-links active_links` : `nav-links`,
     },
     {
       id: 4,
       url: "/contact",
       name: "Contact",
       className:
-        router.pathname == "/contact"
-          ? `${nav_links} ${nav_active}`
-          : `${nav_links}`,
+        router.pathname == "/contact" ? `nav-links active_links` : `nav-links`,
     },
   ];
 
@@ -53,18 +45,14 @@ const Navbar = () => {
       url: "/profile",
       name: "Profile",
       className:
-        router.pathname == "/profile"
-          ? `${nav_links} ${nav_active}`
-          : `${nav_links}`,
+        router.pathname == "/profile" ? `nav-links actibe_link` : `nav-links`,
     },
     {
       id: 2,
       url: "/favorites",
       name: "Favorites",
       className:
-        router.pathname == "/favorites"
-          ? `${nav_links} ${nav_active}`
-          : `${nav_links}`,
+        router.pathname == "/favorites" ? `nav-links actibe_link` : `nav-links`,
     },
   ];
 
@@ -107,7 +95,7 @@ const Navbar = () => {
                   initial={{ opacity: 0, y: 50 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: 50 }}
-                  className="absolute top-[50px] bg-gray-200 p-4 rounded-sm leading-7"
+                  className="absolute top-[50px] bg-gray-200 p-4 rounded-sm leading-7 z-10"
                 >
                   {afterLogin.map(({ id, url, name, className }) => (
                     <li key={id}>
@@ -116,9 +104,7 @@ const Navbar = () => {
                       </Link>
                     </li>
                   ))}
-                  <Button className="px-5 py-1 text-white transition-all duration-300 bg-red-400 mt-2 hover:bg-green-400">
-                    Logout
-                  </Button>
+                  <Button className="btn-primary">Logout</Button>
                 </motion.div>
               )}
             </div>

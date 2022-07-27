@@ -4,6 +4,25 @@
 @tailwind components;
 @tailwind utilities;
 
+
+@layer components{
+    .text{
+        @apply text-gray-400
+    }
+    .btn-primary{
+        @apply px-5 py-1 text-white transition-all duration-300 bg-red-400 mt-2 hover:bg-green-400
+    }
+    .nav-links{
+        @apply text-gray-700 text-sm font-semibold transition-all duration-300 hover:text-red-500
+    }
+    .active_links{
+        @apply text-red-500
+    }
+    .selectColor{
+        @apply border border-gray-300 px-4 py-1 rounded-sm outline-none text
+    }
+}
+
 *{
     margin: 0;
     padding: 0;
