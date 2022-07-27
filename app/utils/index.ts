@@ -30,4 +30,4 @@ export interface IArtis{
 } 
 
 
-export const apiEndPoint = process.env.NEXT_PUBLIC_API_ENDPOINT;
+export const apiEndPoint = process.env.NEXT_PUBLIC_APP_PROXY;

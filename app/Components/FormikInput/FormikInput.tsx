@@ -6,7 +6,7 @@ interface InputProps {
   placeholder?: string;
   id?: string;
   name: string;
-  className?:string
+  className?:string,
 }
 
 const Input: React.FC<InputProps> = ({
@@ -14,7 +14,7 @@ const Input: React.FC<InputProps> = ({
   placeholder,
   name,
   className,
-  id
+  id,
 }) => {
   const [field, meta] = useField({ type, name });
 
@@ -28,7 +28,7 @@ const Input: React.FC<InputProps> = ({
         autoComplete="off"
         type={type}
       />
-      <ErrorMessage component="small" name={field.name} className="error" />
+      <ErrorMessage component="small" name={field.name} className="text-red-600 font-semibold" />
     </>
   );
 };

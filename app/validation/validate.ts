@@ -18,7 +18,4 @@ export const registerValidate = Yup.object({
     .min(8, "Password at least 8 characters")
     .max(32, "Password less then 32 characters")
     .required("Password is require"),
-  cf_password: Yup.string()
-    .oneOf([Yup.ref("password"), null], "Password d't match")
-    .required("Confirm Password is require"),
 });
