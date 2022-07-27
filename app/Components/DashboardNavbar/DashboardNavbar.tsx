@@ -35,19 +35,19 @@ const DashboardNavbar = () => {
     },
     {
       id: 4,
-      url: "/dashboard/album",
-      name: "Album",
+      url: "/dashboard/artist",
+      name: "Artist",
       className:
-        router.pathname == "/dashboard/album"
+        router.pathname == "/dashboard/artist"
           ? `nav-links active_links`
           : `nav-links`,
     },
     {
       id: 5,
-      url: "/dashboard/music",
-      name: "Music",
+      url: "/dashboard/album",
+      name: "Album",
       className:
-        router.pathname == "/dashboard/music"
+        router.pathname == "/dashboard/album"
           ? `nav-links active_links`
           : `nav-links`,
     },

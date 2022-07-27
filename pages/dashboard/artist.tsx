@@ -10,7 +10,7 @@ const data = {
   imageUrl: "https://randomuser.me/api/portraits/men/88.jpg"
 }
 
-const Album = () => {
+const Artist = () => {
   return (
     <>
      <section className="sec_p">
@@ -44,4 +44,4 @@ const Album = () => {
   )
 }
 
-export default Album
+export default Artist
