@@ -21,6 +21,12 @@
     .selectColor{
         @apply border border-gray-300 px-4 py-1 rounded-sm outline-none text
     }
+    .sec_p{
+        @apply px-[0px] py-[5em]
+    }
+    .table{
+        @apply text-sm text-gray-400 font-semibold w-[275px] min-w-[160px] text-center
+    }
 }
 
 *{
