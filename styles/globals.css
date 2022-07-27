@@ -27,6 +27,15 @@
     .table{
         @apply text-sm text-gray-400 font-semibold w-[275px] min-w-[160px] text-center
     }
+    .input_search{
+        @apply rounded-md outline-none block w-full border border-gray-300 px-12 py-2
+    }
+    .input_auth{
+        @apply rounded-md outline-none block w-full border border-gray-300 p-4
+    }
+    .label{
+        @apply rounded-md outline-none block w-full mt-2 mb-3
+    }
 }
 
 *{

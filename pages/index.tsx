@@ -1,4 +1,4 @@
-import type { NextPage } from "next";
+import type { GetServerSideProps, NextPage } from "next";
 import Input from "../app/Components/Input/Input";
 import { BiSearch } from "react-icons/bi";
 import { useState } from "react";
@@ -52,7 +52,7 @@ const Home: NextPage = () => {
             <Input
               type="text"
               placeholder="Search Here..."
-              className="rounded-md outline-none block w-full border border-1 border-gray-300 px-12 py-2"
+              className="input_search"
             />
             <BiSearch
               size={20}
@@ -121,5 +121,20 @@ const Home: NextPage = () => {
     </>
   );
 };
+
+
+export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
+  if (!req.cookies?.token) {
+    return {
+      redirect: {
+        destination: "/login",
+      },
+      props: { isLogin: false },
+    }
+  }
+  return {
+    props: { isLogin: false },
+  }
+}
 
 export default Home;
