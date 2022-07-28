@@ -16,6 +16,7 @@ import Loader from "../Loader/Loader";
 const Navbar = () => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const { token, user } = useSelector((state: RootState) => state.auth);
 
   const menuData = [
     {
@@ -66,7 +67,6 @@ const Navbar = () => {
   ];
 
   const [menu, setMenu] = useState(false);
-  const { token } = useSelector((state: RootState) => state.auth);
   const dispatch = useDispatch();
 
   const handleLogout = async () => {
@@ -83,7 +83,7 @@ const Navbar = () => {
       dispatch(setAuth(data));
       localStorage.removeItem("user");
       cookie.remove("token");
-      router.push("/login")
+      router.push("/login");
     } catch (error) {
       setLoading(false);
       console.log(error);
@@ -133,16 +133,26 @@ const Navbar = () => {
                       exit={{ opacity: 0, y: 50 }}
                       className="absolute top-[50px] bg-gray-200 p-4 rounded-sm leading-7 z-10"
                     >
-                      {afterLogin.map(({ id, url, name, className }) => (
-                        <li key={id}>
-                          <Link href={url}>
+                      {afterLogin.map(({ url, name, className }, index) => (
+                        <li key={index}>
+                          <Link href={url && url}>
                             <a className={`${className} text-gray-500`}>
                               {name}
                             </a>
                           </Link>
                         </li>
                       ))}
-                      <Button className="btn-primary" onClick={handleLogout}>Logout</Button>
+
+                      {user && user.role === "admin" && (
+                        <li>
+                          <Link href="/dashboard">
+                            <a className="nav-links">Admin</a>
+                          </Link>
+                        </li>
+                      )}
+                      <Button className="btn-primary" onClick={handleLogout}>
+                        Logout
+                      </Button>
                     </motion.div>
                   )}
                 </div>

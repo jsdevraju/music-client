@@ -4,6 +4,10 @@ import DashboardCard from "../app/Components/DashboardCard/DashboardCard";
 import DashboardNavbar from "../app/Components/DashboardNavbar/DashboardNavbar";
 
 const Dashboard = () => {
+
+
+
+  
   return (
     <>
       <section className="sec_p">
@@ -18,19 +22,19 @@ const Dashboard = () => {
             />
             <DashboardCard
               icon={<FaUserFriends />}
-              name="Users"
+              name="Artist"
               length={2}
               color="bg-green-400"
             />
             <DashboardCard
               icon={<FaUserFriends />}
-              name="Users"
+              name="Songs"
               length={2}
               color="bg-yellow-400"
             />
             <DashboardCard
               icon={<FaUserFriends />}
-              name="Users"
+              name="Album"
               length={2}
               color="bg-emerald-400"
             />
