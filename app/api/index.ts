@@ -42,3 +42,17 @@ export const getSongs = async (token: string) => {
     return error.message;
   }
 };
+
+export const getAlbums = async (token: string) => {
+  try {
+    const { data } = await axios.get(`${apiEndPoint}/album/getAllAlbum`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return data?.album;
+  } catch (error: any) {
+    return error.message;
+  }
+};
