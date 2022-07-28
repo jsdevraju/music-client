@@ -5,6 +5,7 @@ import axios from "axios";
 import React, { useEffect } from "react";
 import { useRouter } from "next/router";
 import { apiEndPoint } from "./utils";
+import cookie from 'js-cookie'
 
 interface IProps {
   children: React.ReactNode;
@@ -38,11 +39,18 @@ const StoreProvider = ({ children }: IProps) => {
       //Checking token is expire or not if token expire return automatic logout and return login page
       if (res?.data?.message?.includes("invalid token")) {
         return new Promise((response, reject) => {
+          const { token } = store.getState().auth;
           axios
-            .get(`${apiEndPoint}/auth/logout`)
+            .get(`${apiEndPoint}/auth/logout`, {
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+              },
+            })
             .then(({ data }) => {
               store.dispatch(setAuth(data));
               localStorage.clear();
+              cookie.remove("token");
               router.push("/login");
             })
             .catch((err) => {

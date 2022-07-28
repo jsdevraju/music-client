@@ -79,7 +79,7 @@ const Login = () => {
               handleLogin(email, password);
             }}
           >
-            {(formik) => (
+            {() => (
               <>
                 <h1 className="text text-center">Welcome to login page</h1>
                 <Form>

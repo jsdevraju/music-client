@@ -4,11 +4,18 @@ import { motion } from "framer-motion";
 import { useState } from "react";
 import Button from "../Button/Button";
 import { useRouter } from "next/router";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../store";
+import { apiEndPoint } from "../../utils";
+import axios from "axios";
+import toast from "react-hot-toast";
+import { setAuth } from "../../slices/authSlice";
+import cookie from "js-cookie";
+import Loader from "../Loader/Loader";
 
 const Navbar = () => {
   const router = useRouter();
+  const [loading, setLoading] = useState(false);
 
   const menuData = [
     {
@@ -60,61 +67,89 @@ const Navbar = () => {
 
   const [menu, setMenu] = useState(false);
   const { token } = useSelector((state: RootState) => state.auth);
+  const dispatch = useDispatch();
+
+  const handleLogout = async () => {
+    setLoading(true);
+    try {
+      const { data } = await axios.get(`${apiEndPoint}/auth/logout`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setLoading(false);
+      toast.success("Logout Successfully");
+      dispatch(setAuth(data));
+      localStorage.removeItem("user");
+      cookie.remove("token");
+      router.push("/login")
+    } catch (error) {
+      setLoading(false);
+      console.log(error);
+    }
+  };
 
   return (
     <>
-      {token && (
-        <header className="p-2 shadow-md">
-          <div className="container mx-auto">
-            <nav className="flex justify-between items-center">
-              {/* Logo */}
-              <Link href="/">
-                <h5 className="text-red-400 font-bold">Music App</h5>
-              </Link>
-              {/* Navigation Items */}
-              <ul className="flex gap-4 items-center">
-                {menuData.map(({ id, url, name, className }) => (
-                  <li key={id}>
-                    <Link href={url}>
-                      <a className={className}>{name}</a>
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-              {/* User Information*/}
-              <div
-                className="user cursor-pointer relative"
-                onMouseEnter={() => setMenu(!menu)}
-                onMouseLeave={() => setMenu(!menu)}
-              >
-                <Image
-                  src="https://randomuser.me/api/portraits/men/88.jpg"
-                  width={50}
-                  height={50}
-                  alt="Razu Islam"
-                  className="object-cover"
-                />
-                {menu && (
-                  <motion.div
-                    initial={{ opacity: 0, y: 50 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: 50 }}
-                    className="absolute top-[50px] bg-gray-200 p-4 rounded-sm leading-7 z-10"
-                  >
-                    {afterLogin.map(({ id, url, name, className }) => (
-                      <li key={id}>
-                        <Link href={url}>
-                          <a className={`${className} text-gray-500`}>{name}</a>
-                        </Link>
-                      </li>
-                    ))}
-                    <Button className="btn-primary">Logout</Button>
-                  </motion.div>
-                )}
-              </div>
-            </nav>
-          </div>
-        </header>
+      {loading ? (
+        <Loader />
+      ) : (
+        token && (
+          <header className="p-2 shadow-md">
+            <div className="container mx-auto">
+              <nav className="flex justify-between items-center">
+                {/* Logo */}
+                <Link href="/">
+                  <h5 className="text-red-400 font-bold">Music App</h5>
+                </Link>
+                {/* Navigation Items */}
+                <ul className="flex gap-4 items-center">
+                  {menuData.map(({ id, url, name, className }) => (
+                    <li key={id}>
+                      <Link href={url}>
+                        <a className={className}>{name}</a>
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+                {/* User Information*/}
+                <div
+                  className="user cursor-pointer relative"
+                  onMouseEnter={() => setMenu(!menu)}
+                  onMouseLeave={() => setMenu(!menu)}
+                >
+                  <Image
+                    src="https://randomuser.me/api/portraits/men/88.jpg"
+                    width={50}
+                    height={50}
+                    alt="Razu Islam"
+                    className="object-cover"
+                  />
+                  {menu && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 50 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: 50 }}
+                      className="absolute top-[50px] bg-gray-200 p-4 rounded-sm leading-7 z-10"
+                    >
+                      {afterLogin.map(({ id, url, name, className }) => (
+                        <li key={id}>
+                          <Link href={url}>
+                            <a className={`${className} text-gray-500`}>
+                              {name}
+                            </a>
+                          </Link>
+                        </li>
+                      ))}
+                      <Button className="btn-primary" onClick={handleLogout}>Logout</Button>
+                    </motion.div>
+                  )}
+                </div>
+              </nav>
+            </div>
+          </header>
+        )
       )}
     </>
   );
