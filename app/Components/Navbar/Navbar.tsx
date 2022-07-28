@@ -12,6 +12,7 @@ import toast from "react-hot-toast";
 import { setAuth } from "../../slices/authSlice";
 import cookie from "js-cookie";
 import Loader from "../Loader/Loader";
+import { GetServerSideProps } from "next";
 
 const Navbar = () => {
   const router = useRouter();
@@ -163,6 +164,20 @@ const Navbar = () => {
       )}
     </>
   );
+};
+
+export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
+  if (!req.cookies?.token) {
+    return {
+      redirect: {
+        destination: "/login",
+      },
+      props: { isLogin: false },
+    };
+  }
+  return {
+    props: { isLogin: false },
+  };
 };
 
 export default Navbar;

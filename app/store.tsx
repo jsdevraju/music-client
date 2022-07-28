@@ -6,6 +6,7 @@ import React, { useEffect } from "react";
 import { useRouter } from "next/router";
 import { apiEndPoint } from "./utils";
 import cookie from 'js-cookie'
+import music from './slices/musicSlice'
 
 interface IProps {
   children: React.ReactNode;
@@ -15,6 +16,7 @@ interface IProps {
 const store = configureStore({
   reducer: {
     auth,
+    music
   },
   devTools: process.env.NODE_ENV !== "production",
 });

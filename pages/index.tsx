@@ -6,35 +6,42 @@ import Option from "../app/Components/Select/Option";
 import Card from "../app/Components/Card/Card";
 import { motion } from "framer-motion";
 import { IAlbum, IArtis, IMusic } from "../app/utils";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../app/store";
 import { getAlbums, getArtists, getSongs } from "../app/api";
 import { LANGUAGE } from "../app/data";
+import MusicPlayer from "../app/Components/MusicPlayer/MusicPlayer";
+import { setAllSong, setPlaySong, setSong } from "../app/slices/musicSlice";
 
 const Home: NextPage = () => {
   const [album, setAlbum] = useState("");
   const [songs, setSongs] = useState<IMusic[]>();
   const [loading, setLoading] = useState(true);
   const { token } = useSelector((state: RootState) => state.auth);
+  const { isSongPlaying, song } = useSelector(
+    (state: RootState) => state.music
+  );
   const [artist, setArtist] = useState<IArtis[]>();
   const [albums, setAlbums] = useState<IAlbum[]>();
+  const dispatch = useDispatch();
 
   const getSong = async () => {
     const data = await getSongs(token);
     setLoading(false);
+    dispatch(setAllSong({ allSongs: data } as any));
     setSongs(data);
   };
 
   const getAlbum = async () => {
     const data = await getAlbums(token);
-    setLoading(false)
-    setAlbums(data)
+    setLoading(false);
+    setAlbums(data);
   };
 
   const getArtist = async () => {
     const data = await getArtists(token);
-    setLoading(false)
-    setArtist(data)
+    setLoading(false);
+    setArtist(data);
   };
 
   useEffect(() => {
@@ -46,7 +53,7 @@ const Home: NextPage = () => {
   return (
     <>
       {/* Home Section */}
-      <section className="sec_p">
+      <section className="sec_p bg-[#f6f2f4]">
         <div className="container mx-auto">
           {/* Search Bar  */}
           <div className="relative shadow-md">
@@ -68,11 +75,12 @@ const Home: NextPage = () => {
               id=""
               onChange={(e) => setAlbum(e.target.value)}
             >
-              {artist && artist.map((item) => (
-                <Option key={item.name} value={item.name}>
-                  {item.name}
-                </Option>
-              ))}
+              {artist &&
+                artist.map((item) => (
+                  <Option key={item.name} value={item.name}>
+                    {item.name}
+                  </Option>
+                ))}
             </select>
             {/* Album List */}
             <div className="flex items-center gap-6">
@@ -86,11 +94,12 @@ const Home: NextPage = () => {
               className="selectColor"
               onChange={(e) => setAlbum(e.target.value)}
             >
-              {albums && albums.map((item) => (
-                <Option key={item.name} value={item.name}>
-                  {item.name}
-                </Option>
-              ))}
+              {albums &&
+                albums.map((item) => (
+                  <Option key={item.name} value={item.name}>
+                    {item.name}
+                  </Option>
+                ))}
             </select>
             {/* Music Language List */}
             <select
@@ -112,10 +121,26 @@ const Home: NextPage = () => {
             transition={{ duration: 0.3, delay: 0.1 }}
           >
             {songs &&
-              songs?.map((data) => <Card music={data} key={data._id} />)}
+              songs?.map((data, index) => (
+                <Card
+                  music={data}
+                  key={data._id}
+                  index={index}
+                />
+              ))}
           </motion.div>
         </div>
       </section>
+      {isSongPlaying && (
+        <motion.div
+          initial={{ opacity: 0, y: 50 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: 50 }}
+          className={`fixed min-w-[700px] h-26  inset-x-0 bottom-0  bg-cardOverlay drop-shadow-2xl backdrop-blur-md flex items-center justify-center`}
+        >
+          <MusicPlayer />
+        </motion.div>
+      )}
     </>
   );
 };
