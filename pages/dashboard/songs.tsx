@@ -24,7 +24,6 @@ const songs = () => {
     token && getSong();
   }, [token]);
 
-  console.log(songs)
 
   return (
     <>

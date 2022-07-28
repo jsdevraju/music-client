@@ -1,46 +1,47 @@
 import type { GetServerSideProps, NextPage } from "next";
 import Input from "../app/Components/Input/Input";
 import { BiSearch } from "react-icons/bi";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Option from "../app/Components/Select/Option";
 import Card from "../app/Components/Card/Card";
-import { motion } from 'framer-motion'
-
-const artits = [
-  {
-    name: "Vaw",
-  },
-  {
-    name: "sd",
-  },
-  {
-    name: "Vasdw",
-  },
-  {
-    name: "Vawsd",
-  },
-];
-
-const data = {
-  _id: "62e0b8e78b77da47286b5b5c",
-  name: "test1",
-  imageUrl: "https://randomuser.me/api/portraits/men/14.jpg",
-  songUrl: "test1",
-  album: "62dfd005aaffd8fada845d2b",
-  artist: {
-    _id: "62dfae79b5ed778cb95f300e",
-    name: "test2",
-    imageUrl: "test1",
-  },
-  language: "english",
-  category: "pop",
-  createdAt: "2022-07-27T04:02:47.077Z",
-  updatedAt: "2022-07-27T04:02:47.077Z",
-  __v: 0,
-};
+import { motion } from "framer-motion";
+import { IAlbum, IArtis, IMusic } from "../app/utils";
+import { useSelector } from "react-redux";
+import { RootState } from "../app/store";
+import { getAlbums, getArtists, getSongs } from "../app/api";
+import { LANGUAGE } from "../app/data";
 
 const Home: NextPage = () => {
   const [album, setAlbum] = useState("");
+  const [songs, setSongs] = useState<IMusic[]>();
+  const [loading, setLoading] = useState(true);
+  const { token } = useSelector((state: RootState) => state.auth);
+  const [artist, setArtist] = useState<IArtis[]>();
+  const [albums, setAlbums] = useState<IAlbum[]>();
+
+  const getSong = async () => {
+    const data = await getSongs(token);
+    setLoading(false);
+    setSongs(data);
+  };
+
+  const getAlbum = async () => {
+    const data = await getAlbums(token);
+    setLoading(false)
+    setAlbums(data)
+  };
+
+  const getArtist = async () => {
+    const data = await getArtists(token);
+    setLoading(false)
+    setArtist(data)
+  };
+
+  useEffect(() => {
+    token && getSong();
+    token && getAlbum();
+    token && getArtist();
+  }, [token]);
 
   return (
     <>
@@ -67,7 +68,7 @@ const Home: NextPage = () => {
               id=""
               onChange={(e) => setAlbum(e.target.value)}
             >
-              {artits.map((item) => (
+              {artist && artist.map((item) => (
                 <Option key={item.name} value={item.name}>
                   {item.name}
                 </Option>
@@ -85,7 +86,7 @@ const Home: NextPage = () => {
               className="selectColor"
               onChange={(e) => setAlbum(e.target.value)}
             >
-              {artits.map((item) => (
+              {albums && albums.map((item) => (
                 <Option key={item.name} value={item.name}>
                   {item.name}
                 </Option>
@@ -96,7 +97,7 @@ const Home: NextPage = () => {
               className="selectColor"
               onChange={(e) => setAlbum(e.target.value)}
             >
-              {artits.map((item) => (
+              {LANGUAGE.map((item) => (
                 <Option key={item.name} value={item.name}>
                   {item.name}
                 </Option>
@@ -110,18 +111,14 @@ const Home: NextPage = () => {
             animate={{ opacity: 1, translateX: 0 }}
             transition={{ duration: 0.3, delay: 0.1 }}
           >
-            <Card music={data} />
-            <Card music={data} />
-            <Card music={data} />
-            <Card music={data} />
-            <Card music={data} />
+            {songs &&
+              songs?.map((data) => <Card music={data} key={data._id} />)}
           </motion.div>
         </div>
       </section>
     </>
   );
 };
-
 
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   if (!req.cookies?.token) {
@@ -130,11 +127,11 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
         destination: "/login",
       },
       props: { isLogin: false },
-    }
+    };
   }
   return {
     props: { isLogin: false },
-  }
-}
+  };
+};
 
 export default Home;

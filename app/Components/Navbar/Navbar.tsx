@@ -116,8 +116,8 @@ const Navbar = () => {
                 {/* User Information*/}
                 <div
                   className="user cursor-pointer relative"
-                  onMouseEnter={() => setMenu(!menu)}
-                  onMouseLeave={() => setMenu(!menu)}
+                  onMouseEnter={() => setMenu(true)}
+                  onMouseLeave={() => setMenu(false)}
                 >
                   <Image
                     src="https://randomuser.me/api/portraits/men/88.jpg"

@@ -4,6 +4,8 @@ import { motion } from "framer-motion";
 import { MdDelete } from "react-icons/md";
 import { IUser } from "../../utils";
 import Image from "next/image";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store";
 
 interface IProps {
   data: IUser;
@@ -13,6 +15,7 @@ const DashboardUserCard: FC<IProps> = ({ data }) => {
   const [loading, setLoading] = useState(false);
   const [isUpdateRole, setIsUpdateRole] = useState(false);
   const createdAt = moment(new Date(data.createdAt)).format("MMMM Do YYYY");
+  const { user } = useSelector((state: RootState) => state.auth);
 
   return (
     <motion.div
@@ -21,12 +24,14 @@ const DashboardUserCard: FC<IProps> = ({ data }) => {
       transition={{ duration: 0.3, delay: 0.1 }}
       className="relative w-full rounded-md flex items-center justify-between py-4 bg-lightOverlay cursor-pointer hover:bg-card hover:shadow-md"
     >
-      <motion.div
-        whileTap={{ scale: 0.75 }}
-        className="absolute left-4 w-8 h-8 rounded-md flex items-center justify-center bg-gray-200"
-      >
-        <MdDelete className="text-xl text-red-400 hover:text-red-500" />
-      </motion.div>
+      {user && user.role === "admin" && (
+        <motion.div
+          whileTap={{ scale: 0.75 }}
+          className="absolute left-4 w-8 h-8 rounded-md flex items-center justify-center bg-gray-200"
+        >
+          <MdDelete className="text-xl text-red-400 hover:text-red-500" />
+        </motion.div>
+      )}
       <div className="w-[275px] min-w-[160px] flex items-center justify-center">
         {/* prettier-ignore */}
         <Image src={data.avatar} alt="Razu Islam" width={35} height={35} className="object-cover rounded-md min-w-[40px] shadow-md"

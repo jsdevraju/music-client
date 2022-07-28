@@ -1,0 +1,20 @@
+export const LANGUAGE = [
+    {
+        name:"English",
+    },
+    {
+        name:"Bangla",
+    },
+    {
+        name:"Tamil",
+    },
+    {
+        name:"Hindi",
+    },
+    {
+        name:"French",
+    },
+    {
+        name:"Telegu",
+    },
+]
