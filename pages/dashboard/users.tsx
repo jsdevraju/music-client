@@ -1,3 +1,4 @@
+import { GetServerSideProps } from "next";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { getUsers } from "../../app/api";
@@ -74,6 +75,20 @@ const Users = () => {
       )}
     </>
   );
+};
+
+export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
+  if (!req.cookies?.token) {
+    return {
+      redirect: {
+        destination: "/login",
+      },
+      props: { isLogin: false },
+    };
+  }
+  else return {
+    props: { isLogin: true },
+  };
 };
 
 export default Users;

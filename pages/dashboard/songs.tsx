@@ -7,6 +7,7 @@ import { RootState } from "../../app/store";
 import { useSelector } from "react-redux";
 import { getSongs } from "../../app/api";
 import Loader from "../../app/Components/Loader/Loader";
+import { GetServerSideProps } from "next";
 
 const songs = () => {
   const [songs, setSongs] = useState<IMusic[]>();
@@ -56,6 +57,20 @@ const songs = () => {
       )}
     </>
   );
+};
+
+export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
+  if (!req.cookies?.token) {
+    return {
+      redirect: {
+        destination: "/login",
+      },
+      props: { isLogin: false },
+    };
+  }
+  else return {
+    props: { isLogin: true },
+  };
 };
 
 export default songs;

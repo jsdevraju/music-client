@@ -1,3 +1,4 @@
+import { GetServerSideProps } from "next";
 import React, { useEffect, useState } from "react";
 import { FaUserFriends } from "react-icons/fa";
 import { useSelector } from "react-redux";
@@ -88,6 +89,21 @@ const Dashboard = () => {
       )}
     </>
   );
+};
+
+
+export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
+  if (!req.cookies?.token) {
+    return {
+      redirect: {
+        destination: "/login",
+      },
+      props: { isLogin: false },
+    };
+  }
+  else return {
+    props: { isLogin: true },
+  };
 };
 
 export default Dashboard;

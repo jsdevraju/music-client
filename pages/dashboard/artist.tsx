@@ -8,6 +8,7 @@ import { getArtists } from "../../app/api";
 import { useSelector } from "react-redux";
 import { RootState } from "../../app/store";
 import Loader from "../../app/Components/Loader/Loader";
+import { GetServerSideProps } from "next";
 
 const Artist = () => {
   const [artist, setArtist] = useState<IArtis[]>();
@@ -76,6 +77,20 @@ const Artist = () => {
       )}
     </>
   );
+};
+
+export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
+  if (!req.cookies?.token) {
+    return {
+      redirect: {
+        destination: "/login",
+      },
+      props: { isLogin: false },
+    };
+  }
+  else return {
+    props: { isLogin: true },
+  };
 };
 
 export default Artist;
