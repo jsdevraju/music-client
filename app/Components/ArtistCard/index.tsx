@@ -19,7 +19,7 @@ const ArtistCard:FC<IProps> = ({ artist, children }) => {
         className="object-cover"
         alt="Razu islam"
       />
-      <span className="text">{artist.name}</span>
+      <span className="text block">{artist.name}</span>
       {children}
     </div>
     </>

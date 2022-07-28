@@ -56,3 +56,4 @@ export const getAlbums = async (token: string) => {
     return error.message;
   }
 };
+

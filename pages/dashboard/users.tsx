@@ -46,7 +46,7 @@ const Users = () => {
                   <span className="text-sm font-semibold text-textColor mr-2">
                     Count :
                   </span>
-                  2
+                  {users && users?.length}
                 </p>
               </div>
 

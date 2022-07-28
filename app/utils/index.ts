@@ -27,6 +27,10 @@ export interface IArtis {
   _id: string;
   name: string;
   imageUrl: string;
+  instagramLink?: string;
+  linkedinLink?: string;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export interface IAlbum {
