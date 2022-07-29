@@ -9,7 +9,7 @@ import { setPlaySong, setSong } from "../../slices/musicSlice";
 
 interface IProps {
   music: IMusic;
-  index: number;
+  index?: number;
 }
 
 const Card: FC<IProps> = ({ music, index }) => {
@@ -29,9 +29,10 @@ const Card: FC<IProps> = ({ music, index }) => {
   };
 
   return (
-    <div 
-    onClick={() => addToPlay(index)}
-    className="shadow-lg rounded-lg p-4 w-[100%] sm:w-[50%] md:w-[30%] lg:w-[15%] text-center relative">
+    <div
+      onClick={index ? () => addToPlay(index) : () => {}}
+      className="shadow-lg rounded-lg p-4 w-[100%] sm:w-[50%] md:w-[30%] lg:w-[15%] text-center relative"
+    >
       <Image
         src={music.imageUrl}
         width={120}

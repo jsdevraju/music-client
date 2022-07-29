@@ -8,6 +8,8 @@ import { useSelector } from "react-redux";
 import { getSongs } from "../../app/api";
 import Loader from "../../app/Components/Loader/Loader";
 import { GetServerSideProps } from "next";
+import Link from "next/link";
+import { IoAdd } from "react-icons/io5";
 
 const songs = () => {
   const [songs, setSongs] = useState<IMusic[]>();
@@ -24,7 +26,6 @@ const songs = () => {
     token && getSong();
   }, [token]);
 
-
   return (
     <>
       {loading ? (
@@ -33,6 +34,21 @@ const songs = () => {
         <section className="sec_p">
           <div className="container mx-auto">
             <DashboardNavbar />
+            {/* Search And */}
+            <div className="mt-[2em] w-full flex justify-center items-center gap-24">
+              <Link href={"/dashboard/newSong"}>
+                <a className="flex items-center px-4 py-3 border rounded-md border-gray-300 hover:border-gray-400 hover:shadow-md cursor-pointer">
+                  <IoAdd />
+                </a>
+              </Link>
+              <input
+                type="text"
+                placeholder="Search here"
+                className={`w-52 px-4 py-2 border "border-gray-500 shadow-md" : "border-gray-300"
+          } rounded-md bg-transparent outline-none duration-150 transition-all ease-in-out text-base text-textColor font-semibold`}
+              />
+            </div>
+
             {/* Render Music List */}
             <div className="mt-10 w-full flex flex-col items-start justify-start p-4 border border-gray-300 rounded-md gap-3">
               <p className="text-xl font-bold">
@@ -66,10 +82,10 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
       },
       props: { isLogin: false },
     };
-  }
-  else return {
-    props: { isLogin: true },
-  };
+  } else
+    return {
+      props: { isLogin: true },
+    };
 };
 
 export default songs;

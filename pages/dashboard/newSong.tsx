@@ -1,8 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import {
-  ref,
-  deleteObject,
-} from "firebase/storage";
+import { ref, deleteObject } from "firebase/storage";
 import { motion } from "framer-motion";
 import { MdDelete } from "react-icons/md";
 import ImageLoader from "../../app/Components/ImgLoader/ImageLoader";
@@ -18,6 +15,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../app/store";
 import FilterButtons from "../../app/Components/FilterButton/FilterButton";
 import { useRouter } from "next/router";
+import DashboardNavbar from "../../app/Components/DashboardNavbar/DashboardNavbar";
 
 const DashboardNewSong = () => {
   const [isImageLoading, setIsImageLoading] = useState(false);
@@ -46,17 +44,17 @@ const DashboardNewSong = () => {
   const getArtist = async () => {
     const data = await getArtists(token);
     const obj = data?.map((newData: any) => {
-      return { name: newData._id, imageUrl: newData.imageUrl}
-    })
-    setFilterAlbum(obj)
+      return { name: newData._id, imageUrl: newData.imageUrl };
+    });
+    setFilterAlbum(obj);
   };
 
   const getAlbum = async () => {
     const data = await getAlbums(token);
     const obj = data?.map((newData: any) => {
-      return { name: newData._id, imageUrl: newData.imageUrl}
-    })
-    setFilterArtist(obj)
+      return { name: newData._id, imageUrl: newData.imageUrl };
+    });
+    setFilterArtist(obj);
   };
 
   useEffect(() => {
@@ -64,32 +62,34 @@ const DashboardNewSong = () => {
     token && getAlbum();
   }, [token]);
 
-
   const saveNewSongToDB = async () => {
-    if(!filter) return;
+    if (!filter) return;
     try {
-        await saveNewSong(token, {
-          name:songName,
-          imageUrl:songImageUrl,
-          songUrl:audioAsset,
-          album:filter[3],
-          artist:filter[2],
-          language:filter[1],
-          category:filter[0],
-        });
-        toast.success("Created new song")
-        router.push("/")
+      await saveNewSong(token, {
+        name: songName,
+        imageUrl: songImageUrl,
+        songUrl: audioAsset,
+        album: filter[3],
+        artist: filter[2],
+        language: filter[1],
+        category: filter[0],
+      });
+      toast.success("Created new song");
+      router.push("/");
     } catch (error: any) {
-        console.log(error);
+      console.log(error);
     }
-  }
-  
+  };
 
   return (
     <>
       <section className="bg-gray-100 sec_p">
         <div className="container mx-auto">
-          <div className="flex items-center justify-center p-4 border border-gray-300 rounded-md">
+
+    {/* Navbar */}
+    <DashboardNavbar />
+
+          <div className=" mt-[3em] flex items-center justify-center p-4 border border-gray-300 rounded-md">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 w-full">
               <div className="flex flex-col items-center justify-center gap-4">
                 <input
@@ -101,7 +101,7 @@ const DashboardNewSong = () => {
                 />
 
                 <div className="flex w-full justify-between flex-wrap items-center gap-4">
-                  {filterAlbum && filterArtist &&(
+                  {filterAlbum && filterArtist && (
                     <>
                       <FilterButtons
                         filter={filter}
