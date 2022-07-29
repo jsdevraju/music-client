@@ -7,6 +7,10 @@ import { motion } from "framer-motion";
 import { deleteObject, ref } from "firebase/storage";
 import toast from "react-hot-toast";
 import { storage } from "../../../firebase";
+import { saveNewArtist } from "../../api";
+import { useSelector } from "react-redux";
+import { RootState } from "../../store";
+import { useRouter } from "next/router";
 
 const AddNewArtist = () => {
   const [isArtist, setIsArtist] = useState(false);
@@ -15,6 +19,8 @@ const AddNewArtist = () => {
   const [artistName, setArtistName] = useState("");
   const [twitter, setTwitter] = useState("");
   const [instagram, setInstagram] = useState("");
+  const {  token} = useSelector((state: RootState) => state.auth)
+  const router = useRouter()
 
   const deleteImageObject = (songURL: string, action?: string) => {
     const deleteRef = ref(storage, songURL);
@@ -24,6 +30,23 @@ const AddNewArtist = () => {
       setArtistCoverImage("");
     });
   };
+
+  const saveAlbumSongToDB = async () => {
+    if(!artistName || artistName?.length < 5) return toast.error("Album name must be at least 5 characters")
+    try {
+      await saveNewArtist(token, {
+        name:artistName,
+        imageUrl:artistCoverImage,
+        instagramLink:twitter,
+        linkedinLink:instagram
+      });
+      toast.success("Created new artist");
+      router.push("/dashboard/artist");
+    } catch (error: any) {
+      console.log(error);
+    }
+  };
+
 
   return (
     <div className="flex items-center justify-evenly w-full flex-wrap">
@@ -102,7 +125,7 @@ const AddNewArtist = () => {
             <motion.button
               whileTap={{ scale: 0.75 }}
               className="px-8 py-2 rounded-md text-white bg-red-600 hover:shadow-lg"
-              onClick={() => {}}
+              onClick={saveAlbumSongToDB}
             >
               Send
             </motion.button>
