@@ -1,4 +1,5 @@
 import axios from "axios";
+import { store } from "../store";
 import { apiEndPoint } from "../utils";
 
 export const getUsers = async (token: string) => {
@@ -93,7 +94,7 @@ export const saveNewAlbum = async (token: string, fromData: any) => {
   try {
     const { data } = await axios.post(
       `${apiEndPoint}/album/create-album`,
-        fromData,
+      fromData,
       {
         headers: {
           "Content-Type": "application/json",
@@ -107,3 +108,26 @@ export const saveNewAlbum = async (token: string, fromData: any) => {
   }
 };
 
+export const changingUserRole = async (
+  userId: string,
+  role: string,
+  token: string
+) => {
+  try {
+    const res = await axios.put(
+      `${apiEndPoint}/auth/promoteRole/${userId}`,
+      {
+        role: role,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return res;
+  } catch (error: any) {
+    return error;
+  }
+};

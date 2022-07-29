@@ -6,6 +6,7 @@ import { IUser } from "../../utils";
 import Image from "next/image";
 import { useSelector } from "react-redux";
 import { RootState } from "../../store";
+import { changingUserRole } from "../../api";
 
 interface IProps {
   data: IUser;
@@ -15,7 +16,13 @@ const DashboardUserCard: FC<IProps> = ({ data }) => {
   const [loading, setLoading] = useState(false);
   const [isUpdateRole, setIsUpdateRole] = useState(false);
   const createdAt = moment(new Date(data.createdAt)).format("MMMM Do YYYY");
-  const { user } = useSelector((state: RootState) => state.auth);
+  const { user, token } = useSelector((state: RootState) => state.auth);
+
+  const UpdateUserRole = async (userId: string, role: string) => {
+    setLoading(true);
+    setIsUpdateRole(false);
+    await changingUserRole(userId, role, token);
+  };
 
   return (
     <motion.div
@@ -52,7 +59,7 @@ const DashboardUserCard: FC<IProps> = ({ data }) => {
           className="text-[10px]  font-semibold px-1 bg-purple-200 rounded-sm hover:shadow-md"
           onClick={() => setIsUpdateRole(true)}
         >
-          {data.role === "admin" ? "Member" : "Admin"}
+          {data.role === "admin" ? "User" : "Admin"}
         </motion.p>
         {isUpdateRole && (
           <motion.div
@@ -62,13 +69,19 @@ const DashboardUserCard: FC<IProps> = ({ data }) => {
             className="absolute z-10 top-6 right-4 rounded-md p-4 flex items-start flex-col gap-4 bg-white shadow-xl"
           >
             <p className="text-sm font-semibold">
-              Are you sure do u want to mark the user as{" "}
-              <span>{data.role === "admin" ? "Member" : "Admin"}</span> ?
+              Are you sure do u want to mark the user as
+              <span>{data.role === "admin" ? "User" : "Admin"}</span> ?
             </p>
             <div className="flex items-center gap-4">
               <motion.button
                 whileTap={{ scale: 0.75 }}
                 className="outline-none border-none text-sm px-4 py-1 rounded-md bg-blue-200 text-black hover:shadow-md"
+                onClick={() =>
+                  UpdateUserRole(
+                    data._id,
+                    data.role === "admin" ? "user" : "admin"
+                  )
+                }
               >
                 Yes
               </motion.button>
