@@ -62,7 +62,7 @@ const FilterButtons: FC<IProps> = ({ filterData, flag, setFilter, filter }) => {
             >
               {(flag === "Artist" || flag === "Albums") && (
                 <img
-                  src={data.imageURL}
+                  src={data.imageUrl}
                   className="w-8 min-w-[32px] h-8 rounded-full object-cover"
                   alt=""
                 />

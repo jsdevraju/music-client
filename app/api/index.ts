@@ -88,3 +88,22 @@ export const saveNewArtist = async (token: string, artistData: any) => {
     return error.message;
   }
 };
+
+export const saveNewAlbum = async (token: string, fromData: any) => {
+  try {
+    const { data } = await axios.post(
+      `${apiEndPoint}/album/create-album`,
+        fromData,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return data?.album;
+  } catch (error: any) {
+    return error.message;
+  }
+};
+

@@ -1,15 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
 import {
-  getStorage,
   ref,
-  getDownloadURL,
-  uploadBytesResumable,
   deleteObject,
 } from "firebase/storage";
 import { motion } from "framer-motion";
-import { BiCloudUpload } from "react-icons/bi";
 import { MdDelete } from "react-icons/md";
-import { IoMusicalNote } from "react-icons/io5";
 import ImageLoader from "../../app/Components/ImgLoader/ImageLoader";
 import ImageUploader from "../../app/Components/ImageUploader/ImageUploader";
 import DisabledButton from "../../app/Components/DisableButton/DisableButton";
@@ -18,24 +13,25 @@ import AddNewAlbum from "../../app/Components/Add/Add";
 import { storage } from "../../firebase";
 import toast from "react-hot-toast";
 import { FILTER, LANGUAGE } from "../../app/data";
-import { IAlbum, IArtis } from "../../app/utils";
-import { getAlbums, getArtists } from "../../app/api";
+import { getAlbums, getArtists, saveNewSong } from "../../app/api";
 import { useSelector } from "react-redux";
 import { RootState } from "../../app/store";
 import FilterButtons from "../../app/Components/FilterButton/FilterButton";
+import { useRouter } from "next/router";
 
 const DashboardNewSong = () => {
   const [isImageLoading, setIsImageLoading] = useState(false);
   const [songImageUrl, setSongImageUrl] = useState("");
   const [uploadProgress, setUploadProgress] = useState(0);
   const [isAudioLoading, setIsAudioLoading] = useState(false);
-  const [artists, setArtist] = useState<IArtis[]>();
-  const [allAlbums, setAllAlbums] = useState<IAlbum[]>();
+  const [filterArtist, setFilterArtist] = useState<any[]>();
+  const [filterAlbum, setFilterAlbum] = useState<any[]>();
   const [songName, setSongName] = useState("");
   const [audioAsset, setAudioAsset] = useState("");
   const [filter, setFilter] = useState<string[]>();
   const audioRef = useRef<HTMLAudioElement>(null);
   const { token } = useSelector((state: RootState) => state.auth);
+  const router = useRouter();
 
   const deleteImageObject = (songURL: string, action?: string) => {
     const deleteRef = ref(storage, songURL);
@@ -49,12 +45,18 @@ const DashboardNewSong = () => {
 
   const getArtist = async () => {
     const data = await getArtists(token);
-    setArtist(data);
+    const obj = data?.map((newData: any) => {
+      return { name: newData._id, imageUrl: newData.imageUrl}
+    })
+    setFilterAlbum(obj)
   };
 
   const getAlbum = async () => {
     const data = await getAlbums(token);
-    setAllAlbums(data);
+    const obj = data?.map((newData: any) => {
+      return { name: newData._id, imageUrl: newData.imageUrl}
+    })
+    setFilterArtist(obj)
   };
 
   useEffect(() => {
@@ -62,6 +64,25 @@ const DashboardNewSong = () => {
     token && getAlbum();
   }, [token]);
 
+
+  const saveNewSongToDB = async () => {
+    if(!filter) return;
+    try {
+        await saveNewSong(token, {
+          name:songName,
+          imageUrl:songImageUrl,
+          songUrl:audioAsset,
+          album:filter[3],
+          artist:filter[2],
+          language:filter[1],
+          category:filter[0],
+        });
+        toast.success("Created new song")
+        router.push("/")
+    } catch (error: any) {
+        console.log(error);
+    }
+  }
   
 
   return (
@@ -80,18 +101,18 @@ const DashboardNewSong = () => {
                 />
 
                 <div className="flex w-full justify-between flex-wrap items-center gap-4">
-                  {artists && allAlbums &&(
+                  {filterAlbum && filterArtist &&(
                     <>
                       <FilterButtons
                         filter={filter}
                         setFilter={setFilter}
-                        filterData={artists}
+                        filterData={filterArtist}
                         flag={"Artist"}
                       />
                       <FilterButtons
                         filter={filter}
                         setFilter={setFilter}
-                        filterData={allAlbums}
+                        filterData={filterAlbum}
                         flag={"Albums"}
                       />
                       <FilterButtons
@@ -184,7 +205,7 @@ const DashboardNewSong = () => {
                       <motion.button
                         whileTap={{ scale: 0.75 }}
                         className="px-8 py-2 rounded-md text-white bg-red-600 hover:shadow-lg"
-                        onClick={() => {}}
+                        onClick={saveNewSongToDB}
                       >
                         Send
                       </motion.button>
