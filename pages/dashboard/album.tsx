@@ -38,7 +38,7 @@ const Album = () => {
                 <span className="text-sm font-semibold text-left mr-2">
                   Count :
                 </span>
-                2
+                {album && album?.length}
               </p>
               <motion.div
                 className="flex justify-between items-center mt-[3em] flex-wrap w-full"
@@ -46,7 +46,7 @@ const Album = () => {
                 animate={{ opacity: 1, translateX: 0 }}
                 transition={{ duration: 0.3, delay: 0.1 }}
               >
-                {album && album.map((album) => <ArtistCard artist={album} />)}
+                {album && album.map((album) => <ArtistCard key={album._id} artist={album} />)}
               </motion.div>
             </div>
           </div>

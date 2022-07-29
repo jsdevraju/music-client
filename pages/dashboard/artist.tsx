@@ -49,7 +49,7 @@ const Artist = () => {
               >
                 {artist &&
                   artist.map((artist) => (
-                    <ArtistCard artist={artist}>
+                    <ArtistCard artist={artist} key={artist._id}>
                       <div className="flex justify-center items-center gap-2">
                         <a
                           href={artist.linkedinLink}

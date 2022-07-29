@@ -85,9 +85,8 @@ const DashboardNewSong = () => {
     <>
       <section className="bg-gray-100 sec_p">
         <div className="container mx-auto">
-
-    {/* Navbar */}
-    <DashboardNavbar />
+          {/* Navbar */}
+          <DashboardNavbar />
 
           <div className=" mt-[3em] flex items-center justify-center p-4 border border-gray-300 rounded-md">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 w-full">
