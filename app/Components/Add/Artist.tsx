@@ -49,7 +49,7 @@ const AddNewArtist = () => {
 
 
   return (
-    <div className="flex items-center justify-evenly w-full flex-wrap">
+    <div className="mb-12 lg:mt-0 flex items-center justify-evenly w-full flex-wrap">
       <div className="bg-card  backdrop-blur-md w-full lg:w-225 h-225 rounded-md border-2 border-dotted border-gray-300 cursor-pointer">
         {isArtist && <ImageLoader progress={artistProgress} />}
         {!isArtist && (

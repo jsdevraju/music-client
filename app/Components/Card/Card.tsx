@@ -31,7 +31,7 @@ const Card: FC<IProps> = ({ music, index }) => {
   return (
     <div
       onClick={index ? () => addToPlay(index) : () => {}}
-      className="shadow-lg rounded-lg p-4 w-[100%] sm:w-[50%] md:w-[30%] lg:w-[15%] text-center relative"
+      className="bg-white shadow-lg rounded-lg p-4 w-[100%] sm:w-[50%] md:w-[25%] lg:w-[15%] text-center relative"
     >
       <Image
         src={music.imageUrl}

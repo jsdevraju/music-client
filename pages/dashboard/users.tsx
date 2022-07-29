@@ -7,7 +7,7 @@ import Input from "../../app/Components/Input/Input";
 import Loader from "../../app/Components/Loader/Loader";
 import DashboardUserCard from "../../app/Components/UserCard";
 import { RootState } from "../../app/store";
-import { IUser } from "../../app/utils";
+import { IMusic, IUser } from "../../app/utils";
 
 const Users = () => {
   const [users, setUsers] = useState<IUser[]>();
@@ -51,7 +51,7 @@ const Users = () => {
                 </p>
               </div>
 
-              <div className="w-full min-w-[750px] flex items-center justify-between mt-2">
+              <div className="w-full min-w-[750px] flex items-center justify-center mt-2">
                 {/* prettier-ignore */}
                 <p className="table">Image</p>
                 {/* prettier-ignore */}
@@ -85,10 +85,10 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
       },
       props: { isLogin: false },
     };
-  }
-  else return {
-    props: { isLogin: true },
-  };
+  } else
+    return {
+      props: { isLogin: true },
+    };
 };
 
 export default Users;

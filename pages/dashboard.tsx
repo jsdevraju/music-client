@@ -52,7 +52,7 @@ const Dashboard = () => {
     <>
       {loading ? <Loader /> : (
         <section className="sec_p">
-        <div className="container mx-auto">
+        <div className="container mx-auto p-4 lg:p-0">
           <DashboardNavbar />
           <div className="mt-8 flex items-center gap-10 flex-wrap">
             {users && artist && songs && album  &&(

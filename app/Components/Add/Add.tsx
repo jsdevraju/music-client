@@ -83,7 +83,7 @@ const AddNewAlbum = () => {
         <input
           type="text"
           placeholder="Album Name"
-          className="w-full lg:w-300 p-3 rounded-md text-base font-semibold text-textColor outline-none shadow-sm border border-gray-300 bg-transparent"
+          className="mt-4 lg:mt-0 w-full lg:w-300 p-3 rounded-md text-base font-semibold text-textColor outline-none shadow-sm border border-gray-300 bg-transparent"
           value={artistName}
           onChange={(e) => setArtistName(e.target.value)}
         />

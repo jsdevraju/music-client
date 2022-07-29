@@ -7,16 +7,17 @@ import { useRouter } from "next/router";
 import { apiEndPoint } from "./utils";
 import cookie from 'js-cookie'
 import music from './slices/musicSlice'
-
+import filter from './slices/filterSlice'
 interface IProps {
   children: React.ReactNode;
 }
 
 //Create Our Store
-const store = configureStore({
+export const store = configureStore({
   reducer: {
     auth,
-    music
+    music,
+    filter
   },
   devTools: process.env.NODE_ENV !== "production",
 });

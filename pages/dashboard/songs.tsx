@@ -4,27 +4,48 @@ import { motion } from "framer-motion";
 import Card from "../../app/Components/Card/Card";
 import { IMusic } from "../../app/utils";
 import { RootState } from "../../app/store";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { getSongs } from "../../app/api";
 import Loader from "../../app/Components/Loader/Loader";
 import { GetServerSideProps } from "next";
 import Link from "next/link";
 import { IoAdd } from "react-icons/io5";
+import { setAllSong } from "../../app/slices/musicSlice";
 
 const songs = () => {
   const [songs, setSongs] = useState<IMusic[]>();
   const [loading, setLoading] = useState(true);
   const { token } = useSelector((state: RootState) => state.auth);
+  const { allSongs } = useSelector((state: RootState) => state.music);
+  const [songFilter, setSongFilter] = useState("");
+  const [filteredSongs, setFilteredSongs] = useState<IMusic[]>();
+  const dispatch = useDispatch()
 
   const getSong = async () => {
     const data = await getSongs(token);
     setLoading(false);
+    dispatch(setAllSong({ allSongs: data } as any));
     setSongs(data);
   };
 
   useEffect(() => {
     token && getSong();
   }, [token]);
+
+  useEffect(() => {
+    if (songFilter.length > 0 && allSongs) {
+      const filtered = allSongs.filter(
+        (data) =>
+          data.artist.name?.toLowerCase().includes(songFilter) ||
+          data.language?.toLowerCase().includes(songFilter) ||
+          data.name?.toLowerCase().includes(songFilter)
+      );
+        console.log(filtered)
+      setFilteredSongs(filtered);
+    } else {
+      setFilteredSongs(undefined);
+    }
+  }, [songFilter]);
 
   return (
     <>
@@ -44,8 +65,9 @@ const songs = () => {
               <input
                 type="text"
                 placeholder="Search here"
-                className={`w-52 px-4 py-2 border "border-gray-500 shadow-md" : "border-gray-300"
-          } rounded-md bg-transparent outline-none duration-150 transition-all ease-in-out text-base text-textColor font-semibold`}
+                className={`w-52 px-4 py-2 border "border-gray-500 shadow-md" : "border-gray-300 rounded-md bg-transparent outline-none duration-150 transition-all ease-in-out text-base text-textColor font-semibold`}
+                value={songFilter}
+                onChange={(e) => setSongFilter(e.target.value)}
               />
             </div>
 
@@ -55,16 +77,19 @@ const songs = () => {
                 <span className="text-sm font-semibold text-left mr-2">
                   Count :
                 </span>
-                {songs && songs?.length}
+                {filteredSongs ? filteredSongs?.length : allSongs?.length}
               </p>
               <motion.div
-                className="flex justify-between items-center mt-[3em] flex-wrap w-full"
+                className="flex justify-between items-center mt-[3em] flex-wrap w-full gap-10 lg:gap-0"
                 initial={{ opacity: 0, translateX: -50 }}
                 animate={{ opacity: 1, translateX: 0 }}
                 transition={{ duration: 0.3, delay: 0.1 }}
               >
-                {songs &&
-                  songs?.map((data) => <Card music={data} key={data._id} />)}
+                {filteredSongs
+                  ? filteredSongs?.map((data) => (
+                      <Card music={data} key={data._id} />
+                    ))
+                  : songs?.map((data) => <Card music={data} key={data._id} />)}
               </motion.div>
             </div>
           </div>

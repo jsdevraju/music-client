@@ -2,6 +2,8 @@ import React, { FC, useState } from "react";
 import { IoChevronDown } from "react-icons/io5";
 import { motion } from "framer-motion";
 import { IAlbum, IArtis } from "../../utils";
+import { useDispatch } from "react-redux";
+import { setArtistFilter, setLanguageFilter, setAlbumFilter, setFilterTerm } from '../../slices/filterSlice'
 
 interface IProps {
   filterData: any[] | IArtis[] | IAlbum[];
@@ -13,6 +15,7 @@ interface IProps {
 const FilterButtons: FC<IProps> = ({ filterData, flag, setFilter, filter }) => {
   const [filterName, setFilterName] = useState<any[]>();
   const [filterMenu, setFilterMenu] = useState(false);
+  const dispatch = useDispatch()
 
   const updateFilterButton = (name: any) => {
     setFilterName(name);
@@ -21,10 +24,22 @@ const FilterButtons: FC<IProps> = ({ filterData, flag, setFilter, filter }) => {
     if(filter){
         setFilter([name, ...filter])
     }
-    if (flag === "Artist") setFilterName(name);
-    if (flag === "Language") setFilterName(name);
-    if (flag === "Albums") setFilterName(name);
-    if (flag === "Category") setFilterName(name);
+    if (flag === "Artist") {
+      setFilterName(name);
+      dispatch(setArtistFilter({ artistFilter: name} as any));
+    }
+    if (flag === "Language"){
+      setFilterName(name);
+      dispatch(setLanguageFilter({ languageFilter: name} as any));
+    }
+    if (flag === "Albums"){
+      setFilterName(name);
+      dispatch(setAlbumFilter({ albumFilter: name} as any));
+    }
+    if (flag === "Category") {
+      setFilterName(name);
+      dispatch(setArtistFilter({ filterTerm: name} as any));
+    }
   };
 
   return (

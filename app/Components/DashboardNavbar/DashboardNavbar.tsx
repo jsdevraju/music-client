@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { FaHome } from "react-icons/fa";
 
 const DashboardNavbar = () => {
   const router = useRouter();
@@ -55,7 +54,7 @@ const DashboardNavbar = () => {
 
   return (
     <div>
-      <ul className="flex items-center gap-10 justify-center">
+      <ul className="flex items-center gap-4 justify-center flex-wrap lg:gap-10">
         {dashboardNav.map((item) => (
           <li key={item.id}>
             <Link href={item.url}>
