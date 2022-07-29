@@ -34,7 +34,6 @@ const DashboardNewSong = () => {
   const [songName, setSongName] = useState("");
   const [audioAsset, setAudioAsset] = useState("");
   const [filter, setFilter] = useState<string[]>();
-  const [duration, setDuration] = useState(null);
   const audioRef = useRef<HTMLAudioElement>(null);
   const { token } = useSelector((state: RootState) => state.auth);
 
@@ -63,7 +62,7 @@ const DashboardNewSong = () => {
     token && getAlbum();
   }, [token]);
 
-  console.log(filter);
+  
 
   return (
     <>

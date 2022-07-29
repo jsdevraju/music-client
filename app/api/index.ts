@@ -57,3 +57,18 @@ export const getAlbums = async (token: string) => {
   }
 };
 
+export const saveNewSong = async (token: string) => {
+  try {
+    const { data } = await axios.post(`${apiEndPoint}/song/create`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return data?.song;
+  } catch (error: any) {
+    return error.message;
+  }
+};
+
+
