@@ -7,18 +7,32 @@ import Input from "../../app/Components/Input/Input";
 import Loader from "../../app/Components/Loader/Loader";
 import DashboardUserCard from "../../app/Components/UserCard";
 import { RootState } from "../../app/store";
-import { IMusic, IUser } from "../../app/utils";
+import { IUser } from "../../app/utils";
 
 const Users = () => {
   const [users, setUsers] = useState<IUser[]>();
+  const [filterUser, setFilterUser] = useState<IUser[]>();
   const [loading, setLoading] = useState(true);
   const { token } = useSelector((state: RootState) => state.auth);
+  const [emailFilter, setEmailFilter] = useState("");
 
   const getUser = async () => {
     const data = await getUsers(token);
     setLoading(false);
     setUsers(data);
   };
+
+  useEffect(() => {
+    if (users && emailFilter?.length > 0) {
+      const filtered = users.filter(
+        (data) =>
+          data.email.includes(emailFilter) ||
+          data.name.includes(emailFilter) ||
+          data.role.includes(emailFilter)
+      );
+      setFilterUser(filtered);
+    }
+  }, [emailFilter]);
 
   useEffect(() => {
     token && getUser();
@@ -38,6 +52,8 @@ const Users = () => {
                 placeholder="Search..."
                 type="text"
                 className="border border-1 border-gray-300 p-2 rounded-md outline-none"
+                value={emailFilter}
+                onChange={(e) => setEmailFilter(e.target.value)}
               />
             </div>
             {/* User List */}
@@ -47,7 +63,7 @@ const Users = () => {
                   <span className="text-sm font-semibold text-textColor mr-2">
                     Count :
                   </span>
-                  {users && users?.length}
+                  {filterUser ? filterUser?.length : users?.length}
                 </p>
               </div>
 
@@ -65,10 +81,13 @@ const Users = () => {
                 {/* prettier-ignore */}
                 <p className="table">Role</p>
               </div>
-              {users &&
-                users?.map((data) => (
-                  <DashboardUserCard data={data} key={data._id} />
-                ))}
+              {users && !filterUser
+                ? users?.map((data) => (
+                    <DashboardUserCard data={data} key={data._id} />
+                  ))
+                : filterUser?.map((data) => (
+                    <DashboardUserCard data={data} key={data._id} />
+                  ))}
             </div>
           </div>
         </section>

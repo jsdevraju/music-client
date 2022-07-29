@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { useState } from "react";
@@ -120,8 +119,8 @@ const Navbar = () => {
                   onMouseEnter={() => setMenu(true)}
                   onMouseLeave={() => setMenu(false)}
                 >
-                  <Image
-                    src="https://randomuser.me/api/portraits/men/88.jpg"
+                  <img
+                    src={user?.avatar}
                     width={50}
                     height={50}
                     alt="Razu Islam"

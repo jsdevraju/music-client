@@ -2,7 +2,6 @@ import type { GetServerSideProps, NextPage } from "next";
 import Input from "../app/Components/Input/Input";
 import { BiSearch } from "react-icons/bi";
 import { useEffect, useState } from "react";
-import Option from "../app/Components/Select/Option";
 import Card from "../app/Components/Card/Card";
 import { motion } from "framer-motion";
 import { IAlbum, IArtis, IMusic } from "../app/utils";
