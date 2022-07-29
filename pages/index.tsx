@@ -12,21 +12,23 @@ import { getAlbums, getArtists, getSongs } from "../app/api";
 import { FILTER, LANGUAGE } from "../app/data";
 import MusicPlayer from "../app/Components/MusicPlayer/MusicPlayer";
 import { setAllSong } from "../app/slices/musicSlice";
+import FilterButtons from "../app/Components/FilterButton/FilterButton";
 
 const Home: NextPage = () => {
-  const [album, setAlbum] = useState("");
   const [songs, setSongs] = useState<IMusic[]>();
   const [loading, setLoading] = useState(true);
   const { token } = useSelector((state: RootState) => state.auth);
   const { allSongs } = useSelector((state: RootState) => state.music);
-  const { artistFilter } = useSelector((state: RootState) => state.filter);
-  const [searchTerm, setSearchTerm] = useState("")
+  const { artistFilter, filterTerm, albumFilter, languageFilter } = useSelector(
+    (state: RootState) => state.filter
+  );
+  const [searchTerm, setSearchTerm] = useState("");
   const { isSongPlaying, song } = useSelector(
     (state: RootState) => state.music
   );
   const [artist, setArtist] = useState<IArtis[]>();
   const [albums, setAlbums] = useState<IAlbum[]>();
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
 
   const getSong = async () => {
     const data = await getSongs(token);
@@ -67,6 +69,47 @@ const Home: NextPage = () => {
     }
   }, [searchTerm]);
 
+  useEffect(() => {
+    const filtered = allSongs?.filter(
+      (data) => data.artist.name === artistFilter
+    );
+    if (filtered) {
+      setSongs(filtered);
+    } else {
+      setSongs(undefined);
+    }
+  }, [artistFilter]);
+
+  useEffect(() => {
+    const filtered = allSongs?.filter(
+      (data) => data.category.toLowerCase() === filterTerm
+    );
+    if (filtered) {
+      setSongs(filtered);
+    } else {
+      setSongs(undefined);
+    }
+  }, [filterTerm]);
+
+  useEffect(() => {
+    const filtered = allSongs?.filter((data) => data.album === albumFilter);
+    if (filtered) {
+      setSongs(filtered);
+    } else {
+      setSongs(undefined);
+    }
+  }, [albumFilter]);
+
+  useEffect(() => {
+    const filtered = allSongs?.filter(
+      (data) => data.language === languageFilter
+    );
+    if (filtered) {
+      setSongs(filtered);
+    } else {
+      setSongs(undefined);
+    }
+  }, [languageFilter]);
 
 
   return (
@@ -81,7 +124,7 @@ const Home: NextPage = () => {
               placeholder="Search Here..."
               className="input_search"
               value={searchTerm}
-              onChange={e => setSearchTerm(e.target.value)}
+              onChange={(e) => setSearchTerm(e.target.value)}
             />
             <BiSearch
               size={20}
@@ -89,49 +132,15 @@ const Home: NextPage = () => {
             />
           </div>
           {/* List of filter */}
-          <div className="mt-8 flex items-center justify-around flex-wrap gap-6 sm:gap-0">
-            {/* Artist List */}
-            <select
-              className="selectColor"
-              id=""
-              onChange={(e) => setAlbum(e.target.value)}
-            >
-              {artist &&
-                artist.map((item) => (
-                  <Option key={item.name} value={item.name}>
-                    {item.name}
-                  </Option>
-                ))}
-            </select>
-            {/* Album List */}
-            <div className="flex items-center gap-6">
-              {FILTER.map(({name}, index) => (
-                <p key={index} className="text cursor-pointer font-sm">{name}</p>
-              ))}
-            </div>
-            {/* Main Album List */}
-            <select
-              className="selectColor"
-              onChange={(e) => setAlbum(e.target.value)}
-            >
-              {albums &&
-                albums.map((item) => (
-                  <Option key={item.name} value={item.name}>
-                    {item.name}
-                  </Option>
-                ))}
-            </select>
-            {/* Music Language List */}
-            <select
-              className="selectColor"
-              onChange={(e) => setAlbum(e.target.value)}
-            >
-              {LANGUAGE.map((item) => (
-                <Option key={item.name} value={item.name}>
-                  {item.name}
-                </Option>
-              ))}
-            </select>
+          <div className="flex w-full justify-between flex-wrap items-center gap-4 mt-12">
+            {artist && albums && (
+              <>
+                <FilterButtons filterData={artist} flag={"Artist"} />
+                <FilterButtons filterData={albums} flag={"Albums"} />
+                <FilterButtons filterData={LANGUAGE} flag={"Language"} />
+                <FilterButtons filterData={FILTER} flag={"Category"} />
+              </>
+            )}
           </div>
           {/* Render Music List */}
           <motion.div
@@ -140,23 +149,13 @@ const Home: NextPage = () => {
             animate={{ opacity: 1, translateX: 0 }}
             transition={{ duration: 0.3, delay: 0.1 }}
           >
-            { songs ? (
-              songs?.map((data, index) => (
-                <Card
-                  music={data}
-                  key={data._id}
-                  index={index}
-                />
-              ))
-            ) : (
-              allSongs?.map((data, index) => (
-                  <Card
-                    music={data}
-                    key={data._id}
-                    index={index}
-                  />
+            {songs && songs.length > 0 
+              ? songs?.map((data, index) => (
+                  <Card music={data} key={data._id} index={index} />
                 ))
-              ) }
+              : allSongs?.map((data, index) => (
+                  <Card music={data} key={data._id} index={index} />
+                ))}
           </motion.div>
         </div>
       </section>

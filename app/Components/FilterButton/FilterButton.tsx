@@ -9,7 +9,7 @@ interface IProps {
   filterData: any[] | IArtis[] | IAlbum[];
   flag: string;
   filter?:string[];
-  setFilter: (value: string[]) => void;
+  setFilter?: (value: string[]) => void;
 }
 
 const FilterButtons: FC<IProps> = ({ filterData, flag, setFilter, filter }) => {
@@ -20,8 +20,10 @@ const FilterButtons: FC<IProps> = ({ filterData, flag, setFilter, filter }) => {
   const updateFilterButton = (name: any) => {
     setFilterName(name);
     setFilterMenu(false);
-    setFilter([name])
-    if(filter){
+    if(setFilter){
+      setFilter([name])
+    }
+    if(filter && setFilter){
         setFilter([name, ...filter])
     }
     if (flag === "Artist") {
@@ -38,7 +40,7 @@ const FilterButtons: FC<IProps> = ({ filterData, flag, setFilter, filter }) => {
     }
     if (flag === "Category") {
       setFilterName(name);
-      dispatch(setArtistFilter({ filterTerm: name} as any));
+      dispatch(setFilterTerm({ filterTerm: name} as any));
     }
   };
 
