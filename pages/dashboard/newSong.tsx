@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import {
   getStorage,
   ref,
@@ -17,26 +17,53 @@ import AddNewArtist from "../../app/Components/Add/Artist";
 import AddNewAlbum from "../../app/Components/Add/Add";
 import { storage } from "../../firebase";
 import toast from "react-hot-toast";
+import { FILTER, LANGUAGE } from "../../app/data";
+import { IAlbum, IArtis } from "../../app/utils";
+import { getAlbums, getArtists } from "../../app/api";
+import { useSelector } from "react-redux";
+import { RootState } from "../../app/store";
+import FilterButtons from "../../app/Components/FilterButton/FilterButton";
 
 const DashboardNewSong = () => {
   const [isImageLoading, setIsImageLoading] = useState(false);
   const [songImageUrl, setSongImageUrl] = useState("");
   const [uploadProgress, setUploadProgress] = useState(0);
   const [isAudioLoading, setIsAudioLoading] = useState(false);
+  const [artists, setArtist] = useState<IArtis[]>();
+  const [allAlbums, setAllAlbums] = useState<IAlbum[]>();
   const [songName, setSongName] = useState("");
   const [audioAsset, setAudioAsset] = useState("");
+  const [filter, setFilter] = useState<string[]>();
   const [duration, setDuration] = useState(null);
   const audioRef = useRef<HTMLAudioElement>(null);
+  const { token } = useSelector((state: RootState) => state.auth);
 
-  const deleteImageObject = (songURL: string, action?:string) => {
+  const deleteImageObject = (songURL: string, action?: string) => {
     const deleteRef = ref(storage, songURL);
     deleteObject(deleteRef).then(() => {
       toast.success("success");
       toast.error("File removed successfully");
-      setAudioAsset("")
-      if(action === "image") setSongImageUrl("")
+      setAudioAsset("");
+      if (action === "image") setSongImageUrl("");
     });
   };
+
+  const getArtist = async () => {
+    const data = await getArtists(token);
+    setArtist(data);
+  };
+
+  const getAlbum = async () => {
+    const data = await getAlbums(token);
+    setAllAlbums(data);
+  };
+
+  useEffect(() => {
+    token && getArtist();
+    token && getAlbum();
+  }, [token]);
+
+  console.log(filter);
 
   return (
     <>
@@ -52,6 +79,37 @@ const DashboardNewSong = () => {
                   value={songName}
                   onChange={(e) => setSongName(e.target.value)}
                 />
+
+                <div className="flex w-full justify-between flex-wrap items-center gap-4">
+                  {artists && allAlbums &&(
+                    <>
+                      <FilterButtons
+                        filter={filter}
+                        setFilter={setFilter}
+                        filterData={artists}
+                        flag={"Artist"}
+                      />
+                      <FilterButtons
+                        filter={filter}
+                        setFilter={setFilter}
+                        filterData={allAlbums}
+                        flag={"Albums"}
+                      />
+                      <FilterButtons
+                        filter={filter}
+                        setFilter={setFilter}
+                        filterData={LANGUAGE}
+                        flag={"Language"}
+                      />
+                      <FilterButtons
+                        filter={filter}
+                        setFilter={setFilter}
+                        filterData={FILTER}
+                        flag={"Category"}
+                      />
+                    </>
+                  )}
+                </div>
 
                 <div className="flex items-center justify-between gap-2 w-full flex-wrap">
                   <div className="bg-card  backdrop-blur-md w-full lg:w-300 h-300 rounded-md border-2 border-dotted border-gray-300 cursor-pointer">

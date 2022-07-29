@@ -4,12 +4,12 @@ import { BiSearch } from "react-icons/bi";
 import { useEffect, useState } from "react";
 import Option from "../app/Components/Select/Option";
 import Card from "../app/Components/Card/Card";
-import { motion } from "framer-motion";
+import { filterProps, motion } from "framer-motion";
 import { IAlbum, IArtis, IMusic } from "../app/utils";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../app/store";
 import { getAlbums, getArtists, getSongs } from "../app/api";
-import { LANGUAGE } from "../app/data";
+import { FILTER, LANGUAGE } from "../app/data";
 import MusicPlayer from "../app/Components/MusicPlayer/MusicPlayer";
 import { setAllSong, setPlaySong, setSong } from "../app/slices/musicSlice";
 
@@ -84,10 +84,9 @@ const Home: NextPage = () => {
             </select>
             {/* Album List */}
             <div className="flex items-center gap-6">
-              <p className="text cursor-pointer font-sm">Jasp</p>
-              <p className="text cursor-pointer font-sm">Rock</p>
-              <p className="text cursor-pointer font-sm">Melody</p>
-              <p className="text cursor-pointer font-sm">Karoke</p>
+              {FILTER.map(({name}, index) => (
+                <p key={index} className="text cursor-pointer font-sm">{name}</p>
+              ))}
             </div>
             {/* Main Album List */}
             <select
