@@ -24,7 +24,7 @@ export interface IUser {
 }
 
 export interface IArtis {
-  _id: string;
+  _id?: string;
   name: string;
   imageUrl: string;
   instagramLink?: string;

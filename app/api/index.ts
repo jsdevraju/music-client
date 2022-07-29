@@ -57,9 +57,9 @@ export const getAlbums = async (token: string) => {
   }
 };
 
-export const saveNewSong = async (token: string) => {
+export const saveNewSong = async (token: string, fromData: any) => {
   try {
-    const { data } = await axios.post(`${apiEndPoint}/song/create`, {
+    const { data } = await axios.post(`${apiEndPoint}/song/create`, fromData, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
@@ -71,4 +71,20 @@ export const saveNewSong = async (token: string) => {
   }
 };
 
-
+export const saveNewArtist = async (token: string, artistData: any) => {
+  try {
+    const { data } = await axios.post(
+      `${apiEndPoint}/artist/create`,
+      artistData,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    return data?.artist;
+  } catch (error: any) {
+    return error.message;
+  }
+};
