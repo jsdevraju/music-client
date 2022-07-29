@@ -5,12 +5,24 @@ import DisabledButton from "../DisableButton/DisableButton";
 import ImageUploader from "../ImageUploader/ImageUploader";
 import ImageLoader from "../ImgLoader/ImageLoader";
 import { motion } from "framer-motion";
+import { deleteObject, ref } from "firebase/storage";
+import { storage } from "../../../firebase";
+import toast from "react-hot-toast";
 
 const AddNewAlbum = () => {
   const [isArtist, setIsArtist] = useState(false);
   const [artistProgress, setArtistProgress] = useState(0);
   const [artistCoverImage, setArtistCoverImage] = useState("");
   const [artistName, setArtistName] = useState("");
+
+  const deleteImageObject = (songURL: string, action?: string) => {
+    const deleteRef = ref(storage, songURL);
+    deleteObject(deleteRef).then(() => {
+      toast.success("success");
+      toast.error("File removed successfully");
+      setArtistCoverImage("");
+    });
+  };
 
   return (
     <div className="flex items-center justify-evenly w-full flex-wrap">
@@ -35,6 +47,9 @@ const AddNewAlbum = () => {
                 <Button
                   type="button"
                   className="absolute bottom-3 right-3 p-3 rounded-full bg-red-500 text-xl cursor-pointer outline-none hover:shadow-md  duration-500 transition-all ease-in-out"
+                  onClick={() => {
+                    deleteImageObject(artistCoverImage);
+                  }}
                 >
                   <MdDelete className="text-white" />
                 </Button>
