@@ -18,20 +18,17 @@ const ImageUploader: FC<IProps> = ({
   setProgress,
   isImage,
 }) => {
-
-
   const uploadImage = async (e: InputChange) => {
     if (!e.target.files) return;
     isLoading(true);
-    setProgress(0)
-    const res = await uploadFiles(storage, "thumbnail", [
+    setProgress(0);
+    const res = await uploadFiles(storage, "music", [
       ...e.target.files,
     ] as File[]);
-    setProgress(100)
+    setProgress(100);
     isLoading(false);
     setImageURL(res[0]);
   };
-
 
   return (
     <label>

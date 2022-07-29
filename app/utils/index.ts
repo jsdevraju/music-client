@@ -42,4 +42,5 @@ export interface IAlbum {
   __v: number;
 }
 
+
 export const apiEndPoint = process.env.NEXT_PUBLIC_APP_PROXY;

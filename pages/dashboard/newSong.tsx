@@ -15,6 +15,8 @@ import ImageUploader from "../../app/Components/ImageUploader/ImageUploader";
 import DisabledButton from "../../app/Components/DisableButton/DisableButton";
 import AddNewArtist from "../../app/Components/Add/Artist";
 import AddNewAlbum from "../../app/Components/Add/Add";
+import { storage } from "../../firebase";
+import toast from "react-hot-toast";
 
 const DashboardNewSong = () => {
   const [isImageLoading, setIsImageLoading] = useState(false);
@@ -25,6 +27,16 @@ const DashboardNewSong = () => {
   const [audioAsset, setAudioAsset] = useState("");
   const [duration, setDuration] = useState(null);
   const audioRef = useRef<HTMLAudioElement>(null);
+
+  const deleteImageObject = (songURL: string, action?:string) => {
+    const deleteRef = ref(storage, songURL);
+    deleteObject(deleteRef).then(() => {
+      toast.success("success");
+      toast.error("File removed successfully");
+      setAudioAsset("")
+      if(action === "image") setSongImageUrl("")
+    });
+  };
 
   return (
     <>
@@ -65,6 +77,9 @@ const DashboardNewSong = () => {
                             <button
                               type="button"
                               className="absolute bottom-3 right-3 p-3 rounded-full bg-red-500 text-xl cursor-pointer outline-none hover:shadow-md  duration-500 transition-all ease-in-out"
+                              onClick={() => {
+                                deleteImageObject(songImageUrl, "image");
+                              }}
                             >
                               <MdDelete className="text-white" />
                             </button>
@@ -93,6 +108,9 @@ const DashboardNewSong = () => {
                             <button
                               type="button"
                               className="absolute bottom-3 right-3 p-3 rounded-full bg-red-500 text-xl cursor-pointer outline-none hover:shadow-md  duration-500 transition-all ease-in-out"
+                              onClick={() => {
+                                deleteImageObject(audioAsset);
+                              }}
                             >
                               <MdDelete className="text-white" />
                             </button>
