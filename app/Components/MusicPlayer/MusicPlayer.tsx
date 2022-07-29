@@ -35,24 +35,29 @@ const MusicPlayer = () => {
   };
 
   const nextTrack = () => {
-    if (!song || !allSongs) return;
-    if(song || allSongs){
-      if (song > allSongs?.length) dispatch(setSong({ song: 0 } as any));
-      else dispatch(setSong({ song: song + 1 } as any));
-    }
+    if (!song || allSongs?.length === 0) return;
+    if (song > allSongs!.length - 2 ) {
+     
+      dispatch(setSong({ song: 0 } as any));
+    }else{
+      console.log("return next song")
+        dispatch(setSong({ song: song + 1 } as any));
+      }
   };
 
   const previousTrack = () => {
     if (!song || !allSongs) return;
-    else if (song === 0) dispatch(setSong({ song: 0 } as any));
-    else dispatch(setSong({ song: song - 1 } as any));
+    if (song === 0) {
+      dispatch(setSong({ song: 0 } as any));
+    } else {
+      dispatch(setSong({ song: song - 1 } as any));
+    }
   };
 
   useEffect(() => {
     if (!song || !allSongs) return;
     else if (song > allSongs.length) dispatch(setSong({ song: 0 } as any));
-  }, [song, allSongs]);
-
+  }, [song, allSongs, previousTrack, nextTrack]);
 
   return (
     <>

@@ -20,6 +20,7 @@ const Card: FC<IProps> = ({ music, index }) => {
   );
   const addToPlay = (index: number) => {
     if (!isSongPlaying) {
+      dispatch(setSong({ song: index } as any));
       dispatch(setPlaySong({ isSongPlaying: true } as any));
     }
     if (song !== index) {
