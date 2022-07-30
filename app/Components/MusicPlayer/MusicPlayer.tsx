@@ -45,10 +45,7 @@ const musicRef : any = useRef()
   
 
   const nextTrack = () => {
-    // if (!song || allSongs?.length === 0) return;
-    // console.log(song)
     if (song >= allSongs!.length - 1 ) {
-     
       dispatch(setSong({ song: 0 } as any));
     }else{
         dispatch(setSong({ song: song + 1 } as any));
@@ -70,7 +67,6 @@ const musicRef : any = useRef()
 
   useEffect(() => {
     if (isReady) {
-      // console.log("song number" + song)
       musicRef.current!.audio!.current.src = allSongs![song].songUrl
       musicRef.current!.audio!.current.autoplay = true
       setSongNumber(song)
@@ -78,12 +74,6 @@ const musicRef : any = useRef()
     }
   }, [song, isReady, allSongs])
 
-  // useEffect(() => {
-  //   if (isReady) {
-  //     console.log("song number is " + songNumber)
-  //     console.log("song url is " + songLink)
-  //   }
-  // }, [isReady, songNumber, songLink])
 
 
   return (
@@ -221,7 +211,7 @@ export const PlayListCard = () => {
                     <span className="text-base">({music?.album})</span>
                   </p>
                   <p className="text-textColor">
-                    {music?.artist.name}
+                    {music?.artist?.name}
                     <span className="text-sm text-textColor font-semibold">
                       ({music?.category})
                     </span>

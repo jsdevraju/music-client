@@ -15,25 +15,15 @@ interface IProps {
 const Card: FC<IProps> = ({ music, index }) => {
   const { user } = useSelector((state: RootState) => state.auth);
   const dispatch = useDispatch();
-  const { isSongPlaying, song } = useSelector(
-    (state: RootState) => state.music
-  );
   const addToPlay = (index: number) => {
     dispatch(setSong({ song: index } as any));
     dispatch(setPlaySong({ isSongPlaying: true } as any));
-    // if (!isSongPlaying) {
-    //   dispatch(setSong({ song: index } as any));
-    //   dispatch(setPlaySong({ isSongPlaying: true } as any));
-    // }
-    // else {
-    //   dispatch(setSong({ song: index } as any))
-    // }
   };
 
   return (
     <div
       onClick={() => addToPlay(index!) }
-      className="bg-white shadow-lg rounded-lg p-4 w-[100%] sm:w-[50%] md:w-[25%] lg:w-[15%] text-center relative"
+      className="bg-white shadow-lg mt-4 rounded-lg p-4 w-[100%] sm:w-[50%] md:w-[25%] lg:w-[15%] text-center relative"
     >
       <Image
         src={music.imageUrl}
