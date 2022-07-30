@@ -11,12 +11,12 @@ import toast from "react-hot-toast";
 import { setAuth } from "../../slices/authSlice";
 import cookie from "js-cookie";
 import Loader from "../Loader/Loader";
-import { GetServerSideProps } from "next";
 
 const Navbar = () => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const { token, user } = useSelector((state: RootState) => state.auth);
+  const isLogin = cookie.get('token'); 
 
   const menuData = [
     {
@@ -95,7 +95,7 @@ const Navbar = () => {
       {loading ? (
         <Loader />
       ) : (
-        token && (
+        isLogin && (
           <header className="p-2 shadow-md">
             <div className="container mx-auto p-4 sm:p-0">
               <nav className="flex justify-between items-center">
@@ -163,20 +163,6 @@ const Navbar = () => {
       )}
     </>
   );
-};
-
-export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
-  if (!req.cookies?.token) {
-    return {
-      redirect: {
-        destination: "/login",
-      },
-      props: { isLogin: false },
-    };
-  }
-  return {
-    props: { isLogin: false },
-  };
 };
 
 export default Navbar;
