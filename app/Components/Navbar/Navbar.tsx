@@ -11,13 +11,13 @@ import toast from "react-hot-toast";
 import { setAuth } from "../../slices/authSlice";
 import cookie from "js-cookie";
 import Loader from "../Loader/Loader";
-import DashboardNavbar from '../DashboardNavbar/DashboardNavbar';
+
 
 const Navbar = () => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const { token, user } = useSelector((state: RootState) => state.auth);
-
+  
 
   const menuData = [
     {
