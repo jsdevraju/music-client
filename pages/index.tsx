@@ -172,6 +172,9 @@ const Home: NextPage = () => {
   );
 };
 
+
+export default Home;
+
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   if (!req.cookies?.token) {
     return {
@@ -185,5 +188,3 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
     props: { isLogin: false },
   };
 };
-
-export default Home;

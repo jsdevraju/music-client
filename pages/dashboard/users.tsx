@@ -96,6 +96,8 @@ const Users = () => {
   );
 };
 
+export default Users;
+
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   if (!req.cookies?.token) {
     return {
@@ -109,5 +111,3 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
       props: { isLogin: true },
     };
 };
-
-export default Users;

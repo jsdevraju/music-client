@@ -79,6 +79,8 @@ const Artist = () => {
   );
 };
 
+export default Artist;
+
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   if (!req.cookies?.token) {
     return {
@@ -93,4 +95,4 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   };
 };
 
-export default Artist;
+

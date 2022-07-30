@@ -115,6 +115,8 @@ const Register = () => {
   );
 };
 
+export default Register;
+
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   if (req.cookies?.token) {
     return {
@@ -129,4 +131,3 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   };
 };
 
-export default Register;

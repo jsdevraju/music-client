@@ -136,6 +136,8 @@ const Login = () => {
   );
 };
 
+export default Login;
+
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   if (req.cookies?.token) {
     return {
@@ -149,5 +151,3 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
     props: { isLogin: false },
   };
 };
-
-export default Login;

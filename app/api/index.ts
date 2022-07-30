@@ -131,3 +131,17 @@ export const changingUserRole = async (
     return error;
   }
 };
+
+export const getUserInfo = async (token: string) => {
+  try {
+    const { data } = await axios.get(`${apiEndPoint}/admin/user/details`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    return data?.user;
+  } catch (error: any) {
+    return error;
+  }
+};

@@ -12,7 +12,7 @@ import Link from "next/link";
 import { IoAdd } from "react-icons/io5";
 import { setAllSong } from "../../app/slices/musicSlice";
 
-const songs = () => {
+const Songs = () => {
   const [songs, setSongs] = useState<IMusic[]>();
   const [loading, setLoading] = useState(true);
   const { token } = useSelector((state: RootState) => state.auth);
@@ -99,6 +99,8 @@ const songs = () => {
   );
 };
 
+export default Songs;
+
 export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   if (!req.cookies?.token) {
     return {
@@ -112,5 +114,3 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
       props: { isLogin: true },
     };
 };
-
-export default songs;
