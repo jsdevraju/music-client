@@ -11,6 +11,7 @@ import { useRouter } from "next/router";
 import { registerValidate } from "../app/validation/validate";
 import { apiEndPoint } from "../app/utils";
 import Loader from "../app/Components/Loader/Loader";
+import Meta from "../app/Components/Meta/Meta";
 
 const Register = () => {
   const [loading, setLoading] = useState(false);
@@ -39,6 +40,7 @@ const Register = () => {
 
   return (
     <>
+    <Meta title="Music Client - Register" />
       {loading ? (
         <Loader />
       ) : (

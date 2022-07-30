@@ -9,6 +9,7 @@ import ImageUploader from "../app/Components/ImageUploader/ImageUploader";
 import ImageLoader from "../app/Components/ImgLoader/ImageLoader";
 import Input from "../app/Components/Input/Input";
 import Label from "../app/Components/Label/Label";
+import Meta from "../app/Components/Meta/Meta";
 import { RootState } from "../app/store";
 import { storage } from "../firebase";
 
@@ -58,6 +59,7 @@ const Profile = () => {
 
   return (
     <>
+    <Meta title="Music Client - Profile" />
       <section className="sec_p">
         <div className="container mx-auto sm:p-4 lg:p-0">
           <div className="flex items-center justify-center">

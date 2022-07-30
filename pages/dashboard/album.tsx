@@ -8,6 +8,7 @@ import { RootState } from "../../app/store";
 import { IAlbum } from "../../app/utils";
 import Loader from "../../app/Components/Loader/Loader";
 import { GetServerSideProps } from "next";
+import Meta from "../../app/Components/Meta/Meta";
 
 const Album = () => {
   const [album, setAlbum] = useState<IAlbum[]>();
@@ -26,6 +27,7 @@ const Album = () => {
 
   return (
     <>
+    <Meta title="Music Client - Album" />
       {loading ? (
         <Loader />
       ) : (

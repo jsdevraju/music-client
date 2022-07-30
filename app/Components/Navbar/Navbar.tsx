@@ -27,27 +27,6 @@ const Navbar = () => {
       className:
         router.pathname == "/" ? `nav-links active_links` : `nav-links`,
     },
-    {
-      id: 2,
-      url: "/music",
-      name: "Music",
-      className:
-        router.pathname == "/music" ? `nav-links active_links` : `nav-links`,
-    },
-    {
-      id: 13,
-      url: "/premium",
-      name: "Premium",
-      className:
-        router.pathname == "/premium" ? `nav-links active_links` : `nav-links`,
-    },
-    {
-      id: 4,
-      url: "/contact",
-      name: "Contact",
-      className:
-        router.pathname == "/contact" ? `nav-links active_links` : `nav-links`,
-    },
   ];
 
   const afterLogin = [
@@ -57,13 +36,6 @@ const Navbar = () => {
       name: "Profile",
       className:
         router.pathname == "/profile" ? `nav-links actibe_link` : `nav-links`,
-    },
-    {
-      id: 2,
-      url: "/favorites",
-      name: "Favorites",
-      className:
-        router.pathname == "/favorites" ? `nav-links actibe_link` : `nav-links`,
     },
   ];
 

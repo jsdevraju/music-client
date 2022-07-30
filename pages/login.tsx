@@ -17,6 +17,7 @@ import { useDispatch } from "react-redux";
 import { setAuth } from "../app/slices/authSlice";
 import { auth, providerGoogle } from "../firebase";
 import Loader from "../app/Components/Loader/Loader";
+import Meta from "../app/Components/Meta/Meta";
 
 const Login = () => {
   const [loading, setLoading] = useState(false);
@@ -66,6 +67,7 @@ const Login = () => {
 
   return (
     <>
+    <Meta title="Music Client - Login" />
       {loading ? <Loader /> : (
         <section className="flex items-center justify-center min-h-screen">
         <div className="w-[550px] shadow-lg p-8 rounded-lg">

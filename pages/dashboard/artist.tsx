@@ -9,6 +9,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "../../app/store";
 import Loader from "../../app/Components/Loader/Loader";
 import { GetServerSideProps } from "next";
+import Meta from "../../app/Components/Meta/Meta";
 
 const Artist = () => {
   const [artist, setArtist] = useState<IArtis[]>();
@@ -27,6 +28,7 @@ const Artist = () => {
 
   return (
     <>
+     <Meta title="Music Client - Artist" />
       {loading ? (
         <Loader />
       ) : (

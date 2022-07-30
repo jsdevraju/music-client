@@ -6,6 +6,7 @@ import { getAlbums, getArtists, getSongs, getUsers } from "../app/api";
 import DashboardCard from "../app/Components/DashboardCard/DashboardCard";
 import DashboardNavbar from "../app/Components/DashboardNavbar/DashboardNavbar";
 import Loader from "../app/Components/Loader/Loader";
+import Meta from "../app/Components/Meta/Meta";
 import { RootState } from "../app/store";
 import { IAlbum, IArtis, IMusic, IUser } from "../app/utils";
 
@@ -50,6 +51,7 @@ const Dashboard = () => {
 
   return (
     <>
+    <Meta title="Music Client - Admin Dashboard" />
       {loading ? <Loader /> : (
         <section className="sec_p">
         <div className="container mx-auto p-4 lg:p-0">

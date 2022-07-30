@@ -16,6 +16,7 @@ import { RootState } from "../../app/store";
 import FilterButtons from "../../app/Components/FilterButton/FilterButton";
 import { useRouter } from "next/router";
 import DashboardNavbar from "../../app/Components/DashboardNavbar/DashboardNavbar";
+import Meta from "../../app/Components/Meta/Meta";
 
 const DashboardNewSong = () => {
   const [isImageLoading, setIsImageLoading] = useState(false);
@@ -83,6 +84,7 @@ const DashboardNewSong = () => {
 
   return (
     <>
+     <Meta title="Music Client - Add Song" />
       <section className="bg-gray-100 sec_p">
         <div className="container mx-auto">
           {/* Navbar */}

@@ -12,6 +12,7 @@ import { FILTER, LANGUAGE } from "../app/data"
 import MusicPlayer from "../app/Components/MusicPlayer/MusicPlayer"
 import { setAllSong } from "../app/slices/musicSlice"
 import FilterButtons from "../app/Components/FilterButton/FilterButton"
+import Meta from "../app/Components/Meta/Meta"
 
 const Home: NextPage = () => {
   const [songs, setSongs] = useState<IMusic[]>()
@@ -115,6 +116,7 @@ const Home: NextPage = () => {
 
   return (
     <>
+      <Meta title="Music Client - Home" />
       {/* Home Section */}
       <section className="sec_p bg-[#f6f2f4]">
         <div className="container mx-auto p-4 sm:p-0">

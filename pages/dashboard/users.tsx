@@ -5,6 +5,7 @@ import { getUsers } from "../../app/api";
 import DashboardNavbar from "../../app/Components/DashboardNavbar/DashboardNavbar";
 import Input from "../../app/Components/Input/Input";
 import Loader from "../../app/Components/Loader/Loader";
+import Meta from "../../app/Components/Meta/Meta";
 import DashboardUserCard from "../../app/Components/UserCard";
 import { RootState } from "../../app/store";
 import { IUser } from "../../app/utils";
@@ -40,6 +41,7 @@ const Users = () => {
 
   return (
     <>
+     <Meta title="Music Client - Users" />
       {loading ? (
         <Loader />
       ) : (

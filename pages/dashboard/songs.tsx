@@ -11,6 +11,7 @@ import { GetServerSideProps } from "next";
 import Link from "next/link";
 import { IoAdd } from "react-icons/io5";
 import { setAllSong } from "../../app/slices/musicSlice";
+import Meta from "../../app/Components/Meta/Meta";
 
 const Songs = () => {
   const [songs, setSongs] = useState<IMusic[]>();
@@ -49,6 +50,7 @@ const Songs = () => {
 
   return (
     <>
+     <Meta title="Music Client - Songs" />
       {loading ? (
         <Loader />
       ) : (
