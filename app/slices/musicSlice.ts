@@ -20,20 +20,20 @@ export const musicSlice = createSlice({
   // `createSlice` will infer the state type from the `initialState` argument
   initialState,
   reducers: {
-    setPlaySong: (state, action: PayloadAction<MusicState>) => {
+    setPlaySong: (state: MusicState, action: PayloadAction<MusicState>) => {
       state.isSongPlaying = action.payload.isSongPlaying
     },
-    setMiniPlayer: (state, action: PayloadAction<MusicState>) => {
+    setMiniPlayer: (state: MusicState, action: PayloadAction<MusicState>) => {
       state.miniPlayer = action.payload.miniPlayer
     },
-    setSong: (state, action: PayloadAction<MusicState>) => {
+    setSong: (state: MusicState, action: PayloadAction<MusicState>) => {
       state.song = action.payload.song
     },
-    setAllSong: (state, action: PayloadAction<MusicState>) => {
+    setAllSong: (state: MusicState, action: PayloadAction<MusicState>) => {
       state.allSongs = action.payload.allSongs
     },
   },
-});
+})
 
 export const { setPlaySong, setMiniPlayer, setSong, setAllSong } = musicSlice.actions;
 export default musicSlice.reducer;

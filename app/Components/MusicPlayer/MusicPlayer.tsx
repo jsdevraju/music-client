@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { IoMdClose } from "react-icons/io";
 import { IoArrowRedo, IoMusicalNote } from "react-icons/io5";
 import { motion } from "framer-motion";
@@ -13,14 +13,22 @@ import { getSongs } from "../../api";
 const MusicPlayer = () => {
   const [isPlayList, setIsPlayList] = useState(false);
   const dispatch = useDispatch();
-  const { isSongPlaying, miniPlayer, song, allSongs } = useSelector(
+  const [isReady, setIsReady] = useState(false)
+  const { isSongPlaying, miniPlayer, allSongs } = useSelector(
     (state: RootState) => state.music
   );
+const musicRef : any = useRef()
+   const song = useSelector(
+     (state: RootState) => state.music.song
+   )
+
+  const [songNumber, setSongNumber] = useState(song)
+  const [songLink, setSongLink] = useState(allSongs![songNumber].songUrl)
 
   const closeMusicPlayer = () => {
     if (isSongPlaying) {
-      const isPlay = { isSongPlaying: false } as any;
-      dispatch(setPlaySong(isPlay));
+      const isPlay  = { isSongPlaying: false } as any;
+      dispatch(setPlaySong(isPlay))
     }
   };
 
@@ -34,111 +42,133 @@ const MusicPlayer = () => {
     }
   };
 
+  
+
   const nextTrack = () => {
-    if (!song || allSongs?.length === 0) return;
-    if (song > allSongs!.length - 2 ) {
+    // if (!song || allSongs?.length === 0) return;
+    // console.log(song)
+    if (song >= allSongs!.length - 1 ) {
      
       dispatch(setSong({ song: 0 } as any));
     }else{
-      console.log("return next song")
         dispatch(setSong({ song: song + 1 } as any));
       }
   };
 
   const previousTrack = () => {
-    if (!song || !allSongs) return;
+    // if (!song || !allSongs) return;
     if (song === 0) {
-      dispatch(setSong({ song: 0 } as any));
+      dispatch(setSong({ song: allSongs!.length - 1 } as any));
     } else {
       dispatch(setSong({ song: song - 1 } as any));
     }
   };
 
   useEffect(() => {
-    if (!song || !allSongs) return;
-    else if (song > allSongs.length) dispatch(setSong({ song: 0 } as any));
-  }, [song, allSongs, previousTrack, nextTrack]);
+    setIsReady(true)
+  }, [isReady])
+
+  useEffect(() => {
+    if (isReady) {
+      // console.log("song number" + song)
+      musicRef.current!.audio!.current.src = allSongs![song].songUrl
+      musicRef.current!.audio!.current.autoplay = true
+      setSongNumber(song)
+      setSongLink(allSongs![song].songUrl)
+    }
+  }, [song, isReady, allSongs])
+
+  // useEffect(() => {
+  //   if (isReady) {
+  //     console.log("song number is " + songNumber)
+  //     console.log("song url is " + songLink)
+  //   }
+  // }, [isReady, songNumber, songLink])
+
 
   return (
     <>
-      { allSongs && (
-          <div className="w-full full flex items-center gap-3 overflow-hidden">
-            <div
-              className={`w-full full items-center gap-3 p-4 ${
-                miniPlayer ? "absolute top-40" : "flex relative"
-              }`}
-            >
-              <img
-                src={allSongs && allSongs[song]?.imageUrl}
-                className="w-40 h-20 object-cover rounded-md"
-                alt="Razu Islam"
+      {allSongs!.length != 0 && (
+        <div className="w-full full flex items-center gap-3 overflow-hidden">
+          <div
+            className={`w-full full items-center gap-3 p-4 ${
+              miniPlayer ? "absolute top-40" : "flex relative"
+            }`}
+          >
+            <img
+              src={allSongs![songNumber].imageUrl}
+              className="w-40 h-20 object-cover rounded-md"
+              alt="Razu Islam"
+            />
+            <div className="flex items-start flex-col">
+              <p className="text-xl text-headingColor font-semibold">
+                {`${
+                  allSongs![songNumber].name.length > 20
+                    ? allSongs![songNumber].name.slice(0, 20)
+                    : allSongs![songNumber].name
+                }`}
+                <span className="text-base">
+                  ({allSongs![songNumber]?.album})
+                </span>
+              </p>
+              <p className="text-textColor">
+                {allSongs![songNumber]?.artist?.name}
+                <span className="text-sm text-textColor font-semibold">
+                  ({allSongs![songNumber]?.category})
+                </span>
+              </p>
+              <motion.i
+                whileTap={{ scale: 0.8 }}
+                onClick={() => setIsPlayList(!isPlayList)}
+              >
+                <RiPlayListFill className="text-textColor hover:text-headingColor text-3xl cursor-pointer" />
+              </motion.i>
+            </div>
+            <div className="flex-1">
+              <AudioPlayer
+                src={songLink}
+                // onPlay={() => console.log("is playing")}
+                // autoPlay={true}
+                ref={musicRef}
+                showFilledProgress={true}
+                showSkipControls={true}
+                onClickNext={nextTrack}
+                onClickPrevious={previousTrack}
               />
-              <div className="flex items-start flex-col">
-                <p className="text-xl text-headingColor font-semibold">
-                  {`${
-                    allSongs[song]?.name.length > 20
-                      ? allSongs[song]?.name.slice(0, 20)
-                      : allSongs[song]?.name
-                  }`}
-                  <span className="text-base">({allSongs[song]?.album})</span>
-                </p>
-                <p className="text-textColor">
-                  {allSongs[song]?.artist.name}
-                  <span className="text-sm text-textColor font-semibold">
-                    ({allSongs[song]?.category})
-                  </span>
-                </p>
-                <motion.i
-                  whileTap={{ scale: 0.8 }}
-                  onClick={() => setIsPlayList(!isPlayList)}
-                >
-                  <RiPlayListFill className="text-textColor hover:text-headingColor text-3xl cursor-pointer" />
-                </motion.i>
-              </div>
-              <div className="flex-1">
-                <AudioPlayer
-                  src={allSongs && allSongs[song]?.songUrl}
-                  onPlay={() => console.log("is playing")}
-                  autoPlay={true}
-                  showSkipControls={true}
-                  onClickNext={nextTrack}
-                  onClickPrevious={previousTrack}
+            </div>
+            <div className="h-full flex items-center justify-center flex-col gap-3">
+              <motion.i whileTap={{ scale: 0.8 }} onClick={closeMusicPlayer}>
+                <IoMdClose className="text-textColor hover:text-headingColor text-2xl cursor-pointer" />
+              </motion.i>
+              <motion.i whileTap={{ scale: 0.8 }} onClick={togglePlayer}>
+                <IoArrowRedo className="text-textColor hover:text-headingColor text-2xl cursor-pointer" />
+              </motion.i>
+            </div>
+          </div>
+
+          {isPlayList && <PlayListCard />}
+
+          {miniPlayer && (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.6 }}
+              animate={{ opacity: 1, scale: 1 }}
+              className="fixed right-2 bottom-2 "
+            >
+              <div className="w-40 h-40 rounded-full flex items-center justify-center  relative ">
+                <div className="absolute inset-0 rounded-full bg-red-600 blur-xl animate-pulse"></div>
+                <img
+                  onClick={togglePlayer}
+                  src={allSongs![songNumber].imageUrl}
+                  className="z-50 w-32 h-32 rounded-full object-cover cursor-pointer"
+                  alt=""
                 />
               </div>
-              <div className="h-full flex items-center justify-center flex-col gap-3">
-                <motion.i whileTap={{ scale: 0.8 }} onClick={closeMusicPlayer}>
-                  <IoMdClose className="text-textColor hover:text-headingColor text-2xl cursor-pointer" />
-                </motion.i>
-                <motion.i whileTap={{ scale: 0.8 }} onClick={togglePlayer}>
-                  <IoArrowRedo className="text-textColor hover:text-headingColor text-2xl cursor-pointer" />
-                </motion.i>
-              </div>
-            </div>
-  
-            {isPlayList && <PlayListCard />}
-  
-            {miniPlayer && (
-              <motion.div
-                initial={{ opacity: 0, scale: 0.6 }}
-                animate={{ opacity: 1, scale: 1 }}
-                className="fixed right-2 bottom-2 "
-              >
-                <div className="w-40 h-40 rounded-full flex items-center justify-center  relative ">
-                  <div className="absolute inset-0 rounded-full bg-red-600 blur-xl animate-pulse"></div>
-                  <img
-                    onClick={togglePlayer}
-                    src={allSongs[song]?.imageUrl}
-                    className="z-50 w-32 h-32 rounded-full object-cover cursor-pointer"
-                    alt=""
-                  />
-                </div>
-              </motion.div>
-            )}
-          </div>
-        
+            </motion.div>
+          )}
+        </div>
       )}
     </>
-  );
+  )
 };
 
 export const PlayListCard = () => {

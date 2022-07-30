@@ -11,12 +11,13 @@ import toast from "react-hot-toast";
 import { setAuth } from "../../slices/authSlice";
 import cookie from "js-cookie";
 import Loader from "../Loader/Loader";
+import DashboardNavbar from '../DashboardNavbar/DashboardNavbar';
 
 const Navbar = () => {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const { token, user } = useSelector((state: RootState) => state.auth);
-  const isLogin = cookie.get('token'); 
+
 
   const menuData = [
     {
@@ -95,74 +96,76 @@ const Navbar = () => {
       {loading ? (
         <Loader />
       ) : (
-        isLogin && (
-          <header className="p-2 shadow-md">
-            <div className="container mx-auto p-4 sm:p-0">
-              <nav className="flex justify-between items-center">
-                {/* Logo */}
-                <Link href="/">
-                  <h5 className="text-red-400 font-bold">Music App</h5>
-                </Link>
-                {/* Navigation Items */}
-                <ul className="hidden sm:flex gap-4 items-center">
-                  {menuData.map(({ id, url, name, className }) => (
-                    <li key={id}>
-                      <Link href={url}>
-                        <a className={className}>{name}</a>
-                      </Link>
-                    </li>
-                  ))}
-                </ul>
-                {/* User Information*/}
-                <div
-                  className="user cursor-pointer relative"
-                  onMouseEnter={() => setMenu(true)}
-                  onMouseLeave={() => setMenu(false)}
-                >
-                  <img
-                    src={user?.avatar}
-                    width={50}
-                    height={50}
-                    alt="Razu Islam"
-                    className="object-cover"
-                  />
-                  {menu && (
-                    <motion.div
-                      initial={{ opacity: 0, y: 50 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: 50 }}
-                      className="absolute top-[50px] right-0 bg-gray-200 p-4 rounded-sm leading-7 z-10"
-                    >
-                      {afterLogin.map(({ url, name, className }, index) => (
-                        <li key={index}>
-                          <Link href={url && url}>
-                            <a className={`${className} text-gray-500`}>
-                              {name}
-                            </a>
-                          </Link>
-                        </li>
-                      ))}
+        <>
+          {token && (
+            <header className="p-2 shadow-md">
+              <div className="container mx-auto p-4 sm:p-0">
+                <nav className="flex justify-between items-center">
+                  {/* Logo */}
+                  <Link href="/">
+                    <h5 className="text-red-400 cursor-pointer font-bold">Music App</h5>
+                  </Link>
+                  {/* Navigation Items */}
+                  <ul className="hidden sm:flex gap-4 items-center">
+                    {menuData.map(({ id, url, name, className }) => (
+                      <li key={id}>
+                        <Link href={url}>
+                          <a className={className}>{name}</a>
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                  {/* User Information*/}
+                  <div
+                    className="user cursor-pointer relative"
+                    onMouseEnter={() => setMenu(true)}
+                    onMouseLeave={() => setMenu(false)}
+                  >
+                    <img
+                      src={user?.avatar}
+                      width={50}
+                      height={50}
+                      alt="Razu Islam"
+                      className="object-cover"
+                    />
+                    {menu && (
+                      <motion.div
+                        initial={{ opacity: 0, y: 50 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: 50 }}
+                        className="absolute top-[50px] right-0 bg-gray-200 p-4 rounded-sm leading-7 z-10"
+                      >
+                        {afterLogin.map(({ url, name, className }, index) => (
+                          <li key={index}>
+                            <Link href={url && url}>
+                              <a className={`${className} text-gray-500`}>
+                                {name}
+                              </a>
+                            </Link>
+                          </li>
+                        ))}
 
-                      {user && user.role === "admin" && (
-                        <li>
-                          <Link href="/dashboard">
-                            <a className="nav-links">Admin</a>
-                          </Link>
-                        </li>
-                      )}
-                      <Button className="btn-primary" onClick={handleLogout}>
-                        Logout
-                      </Button>
-                    </motion.div>
-                  )}
-                </div>
-              </nav>
-            </div>
-          </header>
-        )
+                        {user && user.role === "admin" && (
+                          <li>
+                            <Link href="/dashboard">
+                              <a className="nav-links">Admin</a>
+                            </Link>
+                          </li>
+                        )}
+                        <Button className="btn-primary" onClick={handleLogout}>
+                          Logout
+                        </Button>
+                      </motion.div>
+                    )}
+                  </div>
+                </nav>
+              </div>
+            </header>
+          )}
+        </>
       )}
     </>
-  );
+  )
 };
 
 export default Navbar;

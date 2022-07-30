@@ -19,18 +19,20 @@ const Card: FC<IProps> = ({ music, index }) => {
     (state: RootState) => state.music
   );
   const addToPlay = (index: number) => {
-    if (!isSongPlaying) {
-      dispatch(setSong({ song: index } as any));
-      dispatch(setPlaySong({ isSongPlaying: true } as any));
-    }
-    if (song !== index) {
-      dispatch(setSong({ song: index } as any));
-    }
+    dispatch(setSong({ song: index } as any));
+    dispatch(setPlaySong({ isSongPlaying: true } as any));
+    // if (!isSongPlaying) {
+    //   dispatch(setSong({ song: index } as any));
+    //   dispatch(setPlaySong({ isSongPlaying: true } as any));
+    // }
+    // else {
+    //   dispatch(setSong({ song: index } as any))
+    // }
   };
 
   return (
     <div
-      onClick={index ? () => addToPlay(index) : () => {}}
+      onClick={() => addToPlay(index!) }
       className="bg-white shadow-lg rounded-lg p-4 w-[100%] sm:w-[50%] md:w-[25%] lg:w-[15%] text-center relative"
     >
       <Image
@@ -41,7 +43,7 @@ const Card: FC<IProps> = ({ music, index }) => {
         alt="Razu islam"
       />
       <h3 className="text-gray-800 font-semibold text-lg">{music.name}</h3>
-      <span className="text">{music.artist.name}</span>
+      <span className="text">{music?.artist?.name}</span>
       {user && user.role === "admin" && (
         <motion.div
           whileTap={{ scale: 0.75 }}
@@ -51,7 +53,7 @@ const Card: FC<IProps> = ({ music, index }) => {
         </motion.div>
       )}
     </div>
-  );
+  )
 };
 
 export default Card;
