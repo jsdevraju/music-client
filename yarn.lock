@@ -1781,7 +1781,7 @@ find-up@^2.1.0:
   dependencies:
     locate-path "^2.0.0"
 
-firebase@^9.9.0, firebase@^9.9.1:
+firebase@^9.9.1:
   version "9.9.1"
   resolved "https://registry.npmjs.org/firebase/-/firebase-9.9.1.tgz"
   integrity sha512-1saLd91mmfNWOdP3DpkCAyXcrwB0iJXZoYY8S98ljp1erL+eUPHu+AHw8ImjynVIejSX07NHgla3mQP0bIniZA==
@@ -2820,16 +2820,6 @@ react-fast-compare@^2.0.1:
   version "2.0.4"
   resolved "https://registry.npmjs.org/react-fast-compare/-/react-fast-compare-2.0.4.tgz"
   integrity sha512-suNP+J1VU1MWFKcyt7RtjiSWUjvidmQSlqu+eHslq+342xCbGTYmC0mEhPCOHxlW0CywylOC1u2DFAT+bv4dBw==
-
-react-firebase-lib@^0.0.4:
-  version "0.0.4"
-  resolved "https://registry.npmjs.org/react-firebase-lib/-/react-firebase-lib-0.0.4.tgz"
-  integrity sha512-R+x+9OB08r9/YfxHMyD44/8MZdd77VglaGgJVJL2anHZ223YnPx2P6rEzfYdfDgtDiu+pWjt6tsiJgKiV57K8g==
-  dependencies:
-    firebase "^9.9.0"
-    next "12.2.2"
-    react "18.2.0"
-    react-dom "18.2.0"
 
 react-h5-audio-player@^3.8.4:
   version "3.8.4"

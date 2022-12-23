@@ -6,7 +6,7 @@ import React, { FormEvent, useState } from "react";
 import toast from "react-hot-toast";
 import cookie from "js-cookie";
 import { FcGoogle } from "react-icons/fc";
-import { googleApi } from "react-firebase-lib";
+import { googleApi } from "../app/firebase";
 import Label from "../app/Components/Label/Label";
 import Input from "../app/Components/FormikInput/FormikInput";
 import Button from "../app/Components/Button/Button";

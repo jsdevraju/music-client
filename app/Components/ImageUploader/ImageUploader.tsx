@@ -1,5 +1,5 @@
 import { ChangeEvent, FC } from "react";
-import { uploadFiles } from "react-firebase-lib";
+import { uploadFiles } from "../../firebase";
 import { BiCloudUpload } from "react-icons/bi";
 import { storage } from "../../../firebase";
 
